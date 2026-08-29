@@ -199,8 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
         envelopeHint.textContent = "Terbuka! Tekan tombol di surat... ✨";
         envelopeHint.style.animation = 'none';
 
-        // Play gentle introductory sound context
+        // Play gentle introductory sound context & enter fullscreen
         playMusic();
+        enterFullscreen();
 
         // Dynamically slide up the letter with a perfect transition delay
         setTimeout(() => {
@@ -631,42 +632,71 @@ document.addEventListener('DOMContentLoaded', () => {
         musicToggle.addEventListener('click', toggleMusic);
     }
 
-    /* ─── Fullscreen & Welcome Handler ────────────────────────────────────── */
-    const welcomeOverlay = document.getElementById('welcome-overlay');
-    const btnEnter = document.getElementById('btn-enter');
+    /* ─── Fullscreen Handler ────────────────────────────────────────────── */
+    const fullscreenBtn = document.getElementById('fullscreen-toggle');
+
+    const isFullscreen = () => {
+        return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+    };
 
     const enterFullscreen = () => {
         const docEl = document.documentElement;
         try {
-            if (docEl.requestFullscreen) {
-                docEl.requestFullscreen();
-            } else if (docEl.webkitRequestFullscreen) {
-                docEl.webkitRequestFullscreen();
-            } else if (docEl.mozRequestFullScreen) {
-                docEl.mozRequestFullScreen();
-            } else if (docEl.msRequestFullscreen) {
-                docEl.msRequestFullscreen();
+            if (!isFullscreen()) {
+                if (docEl.requestFullscreen) {
+                    docEl.requestFullscreen();
+                } else if (docEl.webkitRequestFullscreen) {
+                    docEl.webkitRequestFullscreen();
+                } else if (docEl.mozRequestFullScreen) {
+                    docEl.mozRequestFullScreen();
+                } else if (docEl.msRequestFullscreen) {
+                    docEl.msRequestFullscreen();
+                }
             }
         } catch (err) {
-            console.warn("Fullscreen request ignored or failed:", err);
+            console.warn("Fullscreen request failed:", err);
         }
     };
 
-    if (btnEnter && welcomeOverlay) {
-        btnEnter.addEventListener('click', () => {
-            // Trigger audio autoplay immediately upon interaction
-            playMusic();
+    const exitFullscreen = () => {
+        try {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        } catch (err) {
+            console.warn("Exit fullscreen failed:", err);
+        }
+    };
 
-            // Try to enter fullscreen
+    const toggleFullscreen = () => {
+        if (isFullscreen()) {
+            exitFullscreen();
+        } else {
             enterFullscreen();
+        }
+    };
 
-            // Hide overlay with beautiful animation transition
-            welcomeOverlay.classList.add('hidden');
-
-            // Particle effect explosion on click
-            triggerBurst(window.innerWidth / 2, window.innerHeight / 2, 40, 'star');
-        });
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
     }
+
+    const updateFullscreenIcon = () => {
+        if (fullscreenBtn) {
+            fullscreenBtn.textContent = isFullscreen() ? '✕' : '⛶';
+            fullscreenBtn.title = isFullscreen() ? 'Exit Full Screen' : 'Full Screen';
+        }
+    };
+
+    document.addEventListener('fullscreenchange', updateFullscreenIcon);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
+    document.addEventListener('mozfullscreenchange', updateFullscreenIcon);
+    document.addEventListener('MSFullscreenChange', updateFullscreenIcon);
 
     /* ─── Section 4: 3D Iridescent Soap-Bubbles Wishes ────────────────────── */
     const wishPopup = document.getElementById('wish-popup');
