@@ -277,28 +277,13 @@ document.addEventListener('DOMContentLoaded', () => {
         polaroidsLoaded = true;
 
         const media = [
-            { type: 'image', src: 'assets/2d3ee0a1e8df42c7a147d3999dfe51f7.webp', label: '🩷' },
-            { type: 'image', src: 'assets/37ede72475e14b8dbf7781fc2ef8b2a5.webp', label: '🩷' },
-            { type: 'image', src: 'assets/4502a43f52ae491fb0ca64280809b3b3.webp', label: '🩷' },
-            { type: 'image', src: 'assets/458c3659168c4fda80951af274b68525.webp', label: '🩷' },
-            { type: 'image', src: 'assets/54de44487f944638af9e52312cf8f408.webp', label: '🩷' },
-            { type: 'image', src: 'assets/563d3cdb13194800b2ec248fff78ef0d.webp', label: '🩷' },
-            { type: 'image', src: 'assets/60279080d18b47fa9faacbb647ee5a91.webp', label: '🩷' },
-            { type: 'image', src: 'assets/754eefdeed5a4649955cf66dac827c7d.webp', label: '🩷' },
-            { type: 'image', src: 'assets/7b84a08aca0b46ef89554c7034e2e92f.webp', label: '🩷' },
-            { type: 'image', src: 'assets/86d28a28ee834e3cb91ebd3ef0f9c831.webp', label: '🩷' },
-            { type: 'image', src: 'assets/8bad2c777b6d01817809915837af93e5_0.webp', label: '🩷' },
-            { type: 'image', src: 'assets/IMG_3498.jpg.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/IMG_3675.jpg.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/ad1e859b6b3a4e16b8439c7285402ca5.webp', label: '🩷' },
-            { type: 'image', src: 'assets/ad4da37d9b5945bfa5db6d2cd0fe760c.webp', label: '🩷' },
-            { type: 'image', src: 'assets/c09e642b0ac642a59a6ead9775acee99.webp', label: '🩷' },
-            { type: 'image', src: 'assets/d51d0af38bc447799cc40be9e42fcab4.webp', label: '🩷' },
-            { type: 'image', src: 'assets/d5fb445676914e45bf314b4264327948.webp', label: '🩷' },
-            { type: 'image', src: 'assets/e2d12745e7604ea08b9c99515d69343e.webp', label: '🩷' },
-            { type: 'image', src: 'assets/ea3769a378504dc38e5432480a7e71b2.webp', label: '🩷' },
-            { type: 'image', src: 'assets/ef6365914b4c4ab5ad5ba43d497ae642.webp', label: '🩷' },
-            { type: 'image', src: 'assets/fd3018512baf438d9e902847cb838309.webp', label: '🩷' },
+            { type: 'image', src: 'assets/img1.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/img2.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/img3.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/img4.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/img5.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/img6.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/img7.jpeg', label: '🩷' },
         ];
 
         media.forEach((item, idx) => {

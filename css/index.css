@@ -1337,7 +1337,7 @@ body {
 
 /* Bouquet wrapper */
 .bouquet-wrapper {
-    width: min(100%, 260px);
+    width: min(100%, 340px);
     margin: 0 auto;
     filter: drop-shadow(0 18px 40px rgba(192, 57, 43, 0.22)) drop-shadow(0 6px 12px rgba(255, 77, 148, 0.15));
 }
