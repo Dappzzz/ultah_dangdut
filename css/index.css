@@ -1298,10 +1298,13 @@ body {
     filter: drop-shadow(0 18px 40px rgba(192, 57, 43, 0.22)) drop-shadow(0 6px 12px rgba(255, 77, 148, 0.15));
 }
 
-.bouquet-svg {
+.bouquet-svg,
+.gift-reward-img {
     width: 100%;
     height: auto;
     display: block;
+    border-radius: 16px;
+    object-fit: cover;
     animation: bouquetFloat 3.5s ease-in-out infinite alternate;
 }
 
