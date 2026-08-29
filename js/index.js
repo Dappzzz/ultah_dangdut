@@ -276,18 +276,28 @@ document.addEventListener('DOMContentLoaded', () => {
         polaroidsLoaded = true;
 
         const media = [
-            { type: 'image', src: 'assets/irl01.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl02.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl03.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl04.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl05.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl06.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl07.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl08.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl09.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl10.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/irl11.jpeg', label: '🩷' },
-            { type: 'video', src: 'assets/video.mp4', label: '🩷' },
+            { type: 'image', src: 'assets/2d3ee0a1e8df42c7a147d3999dfe51f7.webp', label: '🩷' },
+            { type: 'image', src: 'assets/37ede72475e14b8dbf7781fc2ef8b2a5.webp', label: '🩷' },
+            { type: 'image', src: 'assets/4502a43f52ae491fb0ca64280809b3b3.webp', label: '🩷' },
+            { type: 'image', src: 'assets/458c3659168c4fda80951af274b68525.webp', label: '🩷' },
+            { type: 'image', src: 'assets/54de44487f944638af9e52312cf8f408.webp', label: '🩷' },
+            { type: 'image', src: 'assets/563d3cdb13194800b2ec248fff78ef0d.webp', label: '🩷' },
+            { type: 'image', src: 'assets/60279080d18b47fa9faacbb647ee5a91.webp', label: '🩷' },
+            { type: 'image', src: 'assets/754eefdeed5a4649955cf66dac827c7d.webp', label: '🩷' },
+            { type: 'image', src: 'assets/7b84a08aca0b46ef89554c7034e2e92f.webp', label: '🩷' },
+            { type: 'image', src: 'assets/86d28a28ee834e3cb91ebd3ef0f9c831.webp', label: '🩷' },
+            { type: 'image', src: 'assets/8bad2c777b6d01817809915837af93e5_0.webp', label: '🩷' },
+            { type: 'image', src: 'assets/IMG_3498.jpg.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/IMG_3675.jpg.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/ad1e859b6b3a4e16b8439c7285402ca5.webp', label: '🩷' },
+            { type: 'image', src: 'assets/ad4da37d9b5945bfa5db6d2cd0fe760c.webp', label: '🩷' },
+            { type: 'image', src: 'assets/c09e642b0ac642a59a6ead9775acee99.webp', label: '🩷' },
+            { type: 'image', src: 'assets/d51d0af38bc447799cc40be9e42fcab4.webp', label: '🩷' },
+            { type: 'image', src: 'assets/d5fb445676914e45bf314b4264327948.webp', label: '🩷' },
+            { type: 'image', src: 'assets/e2d12745e7604ea08b9c99515d69343e.webp', label: '🩷' },
+            { type: 'image', src: 'assets/ea3769a378504dc38e5432480a7e71b2.webp', label: '🩷' },
+            { type: 'image', src: 'assets/ef6365914b4c4ab5ad5ba43d497ae642.webp', label: '🩷' },
+            { type: 'image', src: 'assets/fd3018512baf438d9e902847cb838309.webp', label: '🩷' },
         ];
 
         media.forEach((item, idx) => {
@@ -319,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             polaroidStack.appendChild(card);
-            setupDragAndToss(card);
+            setupDragAndToss(card, item);
         });
         updateVideos();
     };
@@ -340,17 +350,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const setupDragAndToss = (card) => {
+    /* ─── Image Popup Modal Logic ─────────────────────────────────────────── */
+    const imageModal = document.getElementById('image-modal');
+    const imageModalImg = document.getElementById('image-modal-img');
+    const imageModalCaption = document.getElementById('image-modal-caption');
+    const imageModalClose = document.getElementById('image-modal-close');
+    const imageModalBackdrop = document.querySelector('.image-modal-backdrop');
+
+    const openImageModal = (src, label) => {
+        if (!imageModal || !imageModalImg) return;
+        imageModalImg.src = src;
+        if (imageModalCaption) {
+            imageModalCaption.textContent = label || '🩷';
+        }
+        imageModal.classList.add('active');
+        imageModal.setAttribute('aria-hidden', 'false');
+    };
+
+    const closeImageModal = () => {
+        if (!imageModal) return;
+        imageModal.classList.remove('active');
+        imageModal.setAttribute('aria-hidden', 'true');
+        if (imageModalImg) {
+            imageModalImg.src = '';
+        }
+    };
+
+    if (imageModalClose) {
+        imageModalClose.addEventListener('click', closeImageModal);
+    }
+    if (imageModalBackdrop) {
+        imageModalBackdrop.addEventListener('click', closeImageModal);
+    }
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeImageModal();
+    });
+
+    const setupDragAndToss = (card, item) => {
         let isDragging = false;
         let startX = 0;
         let startY = 0;
         let currentX = 0;
         let currentY = 0;
+        let startTime = 0;
 
         const onPointerDown = (e) => {
             isDragging = true;
             startX = e.clientX;
             startY = e.clientY;
+            currentX = 0;
+            currentY = 0;
+            startTime = Date.now();
             card.style.transition = 'none';
             card.setPointerCapture(e.pointerId);
         };
@@ -369,6 +419,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isDragging) return;
             isDragging = false;
             card.releasePointerCapture(e.pointerId);
+
+            const dragDistance = Math.hypot(currentX, currentY);
+            const duration = Date.now() - startTime;
+
+            // Jika hanya tap/click (bukan drag yang jauh) -> buka modal popup
+            if (dragDistance < 10 && duration < 350) {
+                // Kembalikan posisi awal jika ada micro-movement
+                const idx = Array.from(polaroidStack.children).indexOf(card);
+                const rot = (idx % 2 === 0 ? -1 : 1) * (Math.random() * 4 + 1);
+                card.style.transform = `rotate(${rot}deg) scale(${1 - (polaroidStack.children.length - 1 - idx) * 0.02}) translateY(${(polaroidStack.children.length - 1 - idx) * -5}px)`;
+                
+                if (item && item.type === 'image') {
+                    openImageModal(item.src, item.label);
+                }
+                currentX = 0;
+                currentY = 0;
+                return;
+            }
 
             // If thrown past threshold, toss it out!
             if (Math.abs(currentX) > 110) {
