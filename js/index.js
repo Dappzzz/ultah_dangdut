@@ -284,6 +284,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { type: 'image', src: 'assets/img5.jpeg', label: '🩷' },
             { type: 'image', src: 'assets/img6.jpeg', label: '🩷' },
             { type: 'image', src: 'assets/img7.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/img8.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/img9.jpeg', label: '🩷' },
         ];
 
         media.forEach((item, idx) => {
