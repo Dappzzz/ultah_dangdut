@@ -10,251 +10,251 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,700;1,400&family=Quicksand:wght@400;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,700;1,400&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/index.css?v=2.0">
-</head>
 
-<body>
-<!-- KUIS & SPOTIFY OVERLAY FINAL -->
-<div id="quiz-overlay" style="position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at 50% 50%, #fff5f8 0%, #ffe6f0 60%, #ffd1e6 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Quicksand', sans-serif; overflow-y: auto; overflow-x: hidden;">
-    
-<!-- KUIS, MINIGAME & SPOTIFY OVERLAY FINAL -->
-<div id="quiz-overlay" style="position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at 50% 50%, #fff5f8 0%, #ffe6f0 60%, #ffd1e6 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Quicksand', sans-serif; overflow-y: auto; overflow-x: hidden;">
-    
-    <!-- CSS Animasi Transisi & Balasan -->
     <style>
+        /* CSS Animasi Tambahan */
         @keyframes shrinkUpOut { 0% { opacity: 1; transform: scale(1) translateY(0); } 100% { opacity: 0; transform: scale(0.8) translateY(-50px); display: none; } }
         @keyframes fadeInScale { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes popIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
         .pesan-benar { display: none; color: #ff4d88; font-size: 15px; font-weight: bold; margin-top: 25px; animation: popIn 0.4s ease forwards; background: rgba(255, 255, 255, 0.9); padding: 12px 20px; border-radius: 20px; border: 2px dashed #ff4d88; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.15); }
+        .numpad-btn { width: 65px; height: 65px; border-radius: 50%; font-size: 24px; font-weight: bold; background: rgba(255, 255, 255, 0.9); border: 2px solid #ff4d88; color: #ff4d88; display: flex; justify-content: center; align-items: center; margin: 0 auto; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.15); cursor: pointer; transition: 0.1s; user-select: none; }
+        .numpad-btn:active { background: #ff4d88; color: white; transform: scale(0.95); }
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #ff4d88; background: transparent; transition: 0.2s; box-sizing: border-box; margin: 0; padding: 0; }
+        .ttt-cell { width: 80px; height: 80px; background: rgba(255, 255, 255, 0.9); border: 3px solid #ff4d88; border-radius: 15px; font-size: 40px; font-weight: bold; color: #ff4d88; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.15); transition: 0.2s; user-select: none; }
+        .ttt-cell:active { transform: scale(0.95); } .ttt-cell.taken { cursor: default; }
+        .flip-container { perspective: 1000px; width: 100%; max-width: 320px; margin-bottom: 30px; }
+        .flip-card { position: relative; width: 100%; height: 480px; transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+        .flip-card.is-flipped { transform: rotateY(180deg); }
+        .flip-face { width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 24px; box-shadow: 0 15px 35px rgba(255, 77, 148, 0.25); box-sizing: border-box; overflow: hidden; }
+        .flip-front { background: linear-gradient(145deg, #2a151d, #1a0d12); padding: 20px; }
+        .flip-back { position: absolute; top: 0; left: 0; background: #ffffff; border: 2px dashed #ff4d88; padding: 25px 20px 20px 20px; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: flex-start; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        /* CSS TAMBAHAN UNTUK MEMPERBESAR BUKU DIARY */
+        .diary-scene { transform: scale(1.15) !important; transform-origin: top center; margin-top: 25px; }
+        .diary-paper p { font-size: 14px !important; font-weight: 600 !important; line-height: 1.7 !important; color: #351522 !important; }
     </style>
+</head>
+
+<body style="overflow: hidden;"> <!-- Mengunci scroll utama selama kuis berjalan -->
 
     <!-- ============================================== -->
-    <!-- TAHAP 1: PIN LOKER RAHASIA -->
+    <!-- OVERLAY KUIS, MINIGAME & SPOTIFY               -->
     <!-- ============================================== -->
-    <div id="quiz-0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; height: 100%; min-height: 100vh;">
-        <style>
-            .numpad-btn { width: 65px; height: 65px; border-radius: 50%; font-size: 24px; font-weight: bold; background: rgba(255, 255, 255, 0.9); border: 2px solid #ff4d88; color: #ff4d88; display: flex; justify-content: center; align-items: center; margin: 0 auto; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.15); cursor: pointer; transition: 0.1s; user-select: none; }
-            .numpad-btn:active { background: #ff4d88; color: white; transform: scale(0.95); }
-            .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #ff4d88; background: transparent; transition: 0.2s; box-sizing: border-box; margin: 0; padding: 0; }
-        </style>
-
-        <h2 style="color: #ff4d88; font-size: 26px; margin-top: 0; margin-bottom: 5px; font-family: 'Playfair Display', serif;">Masukkan PIN Rahasia 🔒</h2>
-        <p style="color: #e62e70; font-size: 13px; font-weight: bold; margin-bottom: 30px;">(Clue: Tanggal, Bulan, dan Tahun Lahir!)</p>
+    <div id="quiz-overlay" style="position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at 50% 50%, #fff5f8 0%, #ffe6f0 60%, #ffd1e6 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Quicksand', sans-serif; overflow-y: auto; overflow-x: hidden;">
         
-        <div id="pin-dots" style="display: flex; gap: 12px; margin-bottom: 40px; align-items: center; justify-content: center; height: 20px;">
-            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 250px;">
-            <div class="numpad-btn" onclick="addPin(1)">1</div><div class="numpad-btn" onclick="addPin(2)">2</div><div class="numpad-btn" onclick="addPin(3)">3</div>
-            <div class="numpad-btn" onclick="addPin(4)">4</div><div class="numpad-btn" onclick="addPin(5)">5</div><div class="numpad-btn" onclick="addPin(6)">6</div>
-            <div class="numpad-btn" onclick="addPin(7)">7</div><div class="numpad-btn" onclick="addPin(8)">8</div><div class="numpad-btn" onclick="addPin(9)">9</div>
-            <div></div><div class="numpad-btn" onclick="addPin(0)">0</div><div class="numpad-btn" onclick="deletePin()" style="font-size: 24px; border: none; background: transparent; box-shadow: none; color: #ff4d88;">⌫</div>
-        </div>
-
-        <script>
-            let currentPin = ''; const correctPin = '040906';
-            function updateDots() { document.querySelectorAll('#pin-dots .pin-dot').forEach((dot, index) => { dot.style.background = (index < currentPin.length) ? '#ff4d88' : 'transparent'; }); }
-            function addPin(num) { if (currentPin.length < 6) { currentPin += num; updateDots(); if (currentPin.length === 6) setTimeout(() => checkPin(), 300); } }
-            function deletePin() { if (currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updateDots(); } }
-            function checkPin() {
-                if (currentPin === correctPin) {
-                    let audio = document.getElementById('bg-music'); if (audio) audio.play();
-                    let iconPlay = document.getElementById('icon-play'); let iconPause = document.getElementById('icon-pause');
-                    if (iconPlay && iconPause) { iconPlay.style.display = 'none'; iconPause.style.display = 'block'; }
-                    document.getElementById('quiz-0').style.display = 'none'; document.getElementById('quiz-minigame').style.display = 'flex';
-                } else { alert('Yahh PIN salah! Coba ingat-ingat lagi 😋'); currentPin = ''; updateDots(); }
-            }
-            currentPin = ''; updateDots();
-        </script>
-    </div>
-
-    <!-- ============================================== -->
-    <!-- TAHAP 2: MINIGAME TIC-TAC-TOE -->
-    <!-- ============================================== -->
-    <div id="quiz-minigame" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
-        <style>
-            .ttt-cell { width: 80px; height: 80px; background: rgba(255, 255, 255, 0.9); border: 3px solid #ff4d88; border-radius: 15px; font-size: 40px; font-weight: bold; color: #ff4d88; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.15); transition: 0.2s; user-select: none; }
-            .ttt-cell:active { transform: scale(0.95); } .ttt-cell.taken { cursor: default; }
-        </style>
-        <h2 style="color: #ff4d88; font-size: 28px; margin-top: 0; margin-bottom: 5px; font-family: 'Playfair Display', serif;">Tic-Tac-Toe 🎮</h2>
-        <p style="color: #e62e70; font-size: 15px; font-weight: bold; margin-bottom: 30px;">Coba kalahin akuhh! 😝<br><span style="font-size: 13px; font-weight: normal;">(Kamu X, Risyad O)</span></p>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px;">
-            <div class="ttt-cell" onclick="playerMove(0)" id="cell-0"></div><div class="ttt-cell" onclick="playerMove(1)" id="cell-1"></div><div class="ttt-cell" onclick="playerMove(2)" id="cell-2"></div>
-            <div class="ttt-cell" onclick="playerMove(3)" id="cell-3"></div><div class="ttt-cell" onclick="playerMove(4)" id="cell-4"></div><div class="ttt-cell" onclick="playerMove(5)" id="cell-5"></div>
-            <div class="ttt-cell" onclick="playerMove(6)" id="cell-6"></div><div class="ttt-cell" onclick="playerMove(7)" id="cell-7"></div><div class="ttt-cell" onclick="playerMove(8)" id="cell-8"></div>
-        </div>
-        <div id="ttt-message" style="color: #ff4d88; font-size: 16px; font-weight: bold; height: 20px; margin-bottom: 25px;"></div>
-
-        <script>
-            let board = ['', '', '', '', '', '', '', '', '']; let gameActive = true;
-            const winConditions = [ [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6] ];
-            function checkWin(player) { return winConditions.some(cond => cond.every(idx => board[idx] === player)); }
-            function checkDraw() { return board.every(cell => cell !== ''); }
+        <!-- TAHAP 1: PIN LOKER RAHASIA -->
+        <div id="quiz-0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; height: 100%; min-height: 100vh;">
+            <h2 style="color: #ff4d88; font-size: 26px; margin-top: 0; margin-bottom: 5px; font-family: 'Playfair Display', serif;">🌸</h2>
+            <p style="color: #e62e70; font-size: 13px; font-weight: bold; margin-bottom: 30px;">(Clue: Hari Kelahiran kamuh sayangg!)</p>
             
-            function endGame(message) {
-                gameActive = false; document.getElementById('ttt-message').innerText = message;
-                setTimeout(() => {
-                    let minigame = document.getElementById('quiz-minigame'); minigame.style.animation = 'shrinkUpOut 0.8s forwards';
+            <div id="pin-dots" style="display: flex; gap: 12px; margin-bottom: 40px; align-items: center; justify-content: center; height: 20px;">
+                <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+                <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 250px;">
+                <div class="numpad-btn" onclick="addPin(1)">1</div><div class="numpad-btn" onclick="addPin(2)">2</div><div class="numpad-btn" onclick="addPin(3)">3</div>
+                <div class="numpad-btn" onclick="addPin(4)">4</div><div class="numpad-btn" onclick="addPin(5)">5</div><div class="numpad-btn" onclick="addPin(6)">6</div>
+                <div class="numpad-btn" onclick="addPin(7)">7</div><div class="numpad-btn" onclick="addPin(8)">8</div><div class="numpad-btn" onclick="addPin(9)">9</div>
+                <div></div><div class="numpad-btn" onclick="addPin(0)">0</div><div class="numpad-btn" onclick="deletePin()" style="font-size: 24px; border: none; background: transparent; box-shadow: none; color: #ff4d88;">⌫</div>
+            </div>
+            
+            <script>
+                let currentPin = ''; const correctPin = '040906';
+                function updateDots() { document.querySelectorAll('#pin-dots .pin-dot').forEach((dot, index) => { dot.style.background = (index < currentPin.length) ? '#ff4d88' : 'transparent'; }); }
+                function addPin(num) { if (currentPin.length < 6) { currentPin += num; updateDots(); if (currentPin.length === 6) setTimeout(() => checkPin(), 300); } }
+                function deletePin() { if (currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updateDots(); } }
+                function checkPin() {
+                    if (currentPin === correctPin) {
+                        let audio = document.getElementById('bg-music'); if (audio) audio.play();
+                        let iconPlay = document.getElementById('icon-play'); let iconPause = document.getElementById('icon-pause');
+                        if (iconPlay && iconPause) { iconPlay.style.display = 'none'; iconPause.style.display = 'block'; }
+                        document.getElementById('quiz-0').style.display = 'none'; document.getElementById('quiz-minigame').style.display = 'flex';
+                    } else { alert('Yahh PIN salah! Coba ingat-ingat lagi 😋'); currentPin = ''; updateDots(); }
+                }
+                currentPin = ''; updateDots();
+            </script>
+        </div>
+
+        <!-- TAHAP 2: MINIGAME TIC-TAC-TOE -->
+        <div id="quiz-minigame" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px;">
+                <div class="ttt-cell" onclick="playerMove(0)" id="cell-0"></div><div class="ttt-cell" onclick="playerMove(1)" id="cell-1"></div><div class="ttt-cell" onclick="playerMove(2)" id="cell-2"></div>
+                <div class="ttt-cell" onclick="playerMove(3)" id="cell-3"></div><div class="ttt-cell" onclick="playerMove(4)" id="cell-4"></div><div class="ttt-cell" onclick="playerMove(5)" id="cell-5"></div>
+                <div class="ttt-cell" onclick="playerMove(6)" id="cell-6"></div><div class="ttt-cell" onclick="playerMove(7)" id="cell-7"></div><div class="ttt-cell" onclick="playerMove(8)" id="cell-8"></div>
+            </div>
+            <div id="ttt-message" style="color: #ff4d88; font-size: 16px; font-weight: bold; height: 20px; margin-bottom: 25px;"></div>
+            
+            <script>
+                let board = ['', '', '', '', '', '', '', '', '']; let gameActive = true;
+                const winConditions = [ [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6] ];
+                function checkWin(player) { return winConditions.some(cond => cond.every(idx => board[idx] === player)); }
+                function checkDraw() { return board.every(cell => cell !== ''); }
+                function endGame(message) {
+                    gameActive = false; document.getElementById('ttt-message').innerText = message;
                     setTimeout(() => {
-                        minigame.style.display = 'none'; let transitionScreen = document.getElementById('quiz-transition'); transitionScreen.style.display = 'flex';
+                        let minigame = document.getElementById('quiz-minigame'); minigame.style.animation = 'shrinkUpOut 0.8s forwards';
                         setTimeout(() => {
-                            transitionScreen.style.animation = 'shrinkUpOut 0.8s forwards';
-                            setTimeout(() => { transitionScreen.style.display = 'none'; let quiz1 = document.getElementById('quiz-1'); quiz1.style.display = 'flex'; quiz1.style.animation = 'fadeInScale 0.8s forwards'; }, 700);
-                        }, 2500);
-                    }, 700);
-                }, 2000);
-            }
-
-            function playerMove(index) {
-                if (board[index] === '' && gameActive) {
-                    board[index] = 'X'; let cell = document.getElementById('cell-' + index); cell.innerText = 'X'; cell.classList.add('taken');
-                    if (checkWin('X')) return endGame('Yayy kamu menang! Hebat sayangkuh 👏');
-                    if (checkDraw()) return endGame('Yah seri! Sama-sama jago nih kita 😂');
-                    setTimeout(aiMove, 400);
+                            minigame.style.display = 'none'; let transitionScreen = document.getElementById('quiz-transition'); transitionScreen.style.display = 'flex';
+                            setTimeout(() => {
+                                transitionScreen.style.animation = 'shrinkUpOut 0.8s forwards';
+                                setTimeout(() => { transitionScreen.style.display = 'none'; let quiz1 = document.getElementById('quiz-1'); quiz1.style.display = 'flex'; quiz1.style.animation = 'fadeInScale 0.8s forwards'; }, 700);
+                            }, 2500);
+                        }, 700);
+                    }, 2000);
                 }
-            }
-            function aiMove() {
-                if (!gameActive) return;
-                let empty = []; board.forEach((val, idx) => { if (val === '') empty.push(idx); });
-                if (empty.length > 0) {
-                    let rand = empty[Math.floor(Math.random() * empty.length)];
-                    board[rand] = 'O'; let cell = document.getElementById('cell-' + rand); cell.innerText = 'O'; cell.style.color = '#e62e70'; cell.classList.add('taken');
-                    if (checkWin('O')) return endGame('Wlee Risyad menang! 😝 Jangan ngambek yaa');
-                    if (checkDraw()) return endGame('Yah seri! Sama-sama jago nih kita 😂');
+                function playerMove(index) {
+                    if (board[index] === '' && gameActive) {
+                        board[index] = 'X'; let cell = document.getElementById('cell-' + index); cell.innerText = 'X'; cell.classList.add('taken');
+                        if (checkWin('X')) return endGame('Yayy kamu menangggg!');
+                        if (checkDraw()) return endGame('Yah seri! Sama-sama jago nih kita 😂');
+                        setTimeout(aiMove, 400);
+                    }
                 }
-            }
-        </script>
-    </div>
-
-    <!-- TAHAP 2.5: LAYAR TRANSISI -->
-    <div id="quiz-transition" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh; animation: fadeInScale 0.8s forwards;">
-        <h2 style="color: #ff4d88; font-size: 32px; margin-top: 0; margin-bottom: 15px; font-family: 'Playfair Display', serif;">Pemanasan Selesai! ✨</h2>
-        <p style="color: #e62e70; font-size: 16px; font-weight: bold; background: rgba(255, 255, 255, 0.9); padding: 15px 25px; border-radius: 20px; border: 2px dashed #ff4d88; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.2); line-height: 1.6;">Sekarang kita masuk ke sesi kuis ya sayangkuh...<br>Siap-siap! 📝💕</p>
-    </div>
-
-    <!-- KUIS 1 -->
-    <div id="quiz-1" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
-        <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif;">Hari ini adalah hari apa?? 🧐</h2>
-        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
-            <button onclick="alert('Masa lupa sih? Coba lagi! 😤')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Hari Biasa Aja</button>
-            <button onclick="document.getElementById('msg-1').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-1').style.display='none'; document.getElementById('quiz-2').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Hari Ulang Tahun Frieza! 🎂</button>
-            <button onclick="alert('Bukan dong! Ayo coba pikir lagi. 🤨')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Hari Libur Nasional</button>
+                function aiMove() {
+                    if (!gameActive) return;
+                    let empty = []; board.forEach((val, idx) => { if (val === '') empty.push(idx); });
+                    if (empty.length > 0) {
+                        let rand = empty[Math.floor(Math.random() * empty.length)];
+                        board[rand] = 'O'; let cell = document.getElementById('cell-' + rand); cell.innerText = 'O'; cell.style.color = '#e62e70'; cell.classList.add('taken');
+                        if (checkWin('O')) return endGame('Wlee Risyad menang! 😝 Jangan ngambek yaa');
+                        if (checkDraw()) return endGame('Yah seri! Sama-sama jago nih kita 😂');
+                    }
+                }
+            </script>
         </div>
-        <div id="msg-1" class="pesan-benar">Hehe bener sayangkuh! Selamat ulang tahun ya! 😘 🎉</div>
-    </div>
 
-    <!-- KUIS 2 -->
-    <div id="quiz-2" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
-        <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif; line-height: 1.4;">Siapa cowok yang paling sayang sama Frieza? 🥰</h2>
-        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
-            <button onclick="alert('Kurang tepat! 😤')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Aktor Korea</button>
-            <button onclick="document.getElementById('msg-2').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-2').style.display='none'; document.getElementById('quiz-3').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Risyad dong pastinya! 🙋🏻‍♂️</button>
-            <button onclick="alert('Ngawur! 😡')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Gak tau</button>
+        <!-- TAHAP 2.5: LAYAR TRANSISI -->
+        <div id="quiz-transition" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh; animation: fadeInScale 0.8s forwards;">
+            <h2 style="color: #ff4d88; font-size: 32px; margin-top: 0; margin-bottom: 15px; font-family: 'Playfair Display', serif;">Horreeyyyy</h2>
+            <p style="color: #e62e70; font-size: 16px; font-weight: bold; background: rgba(255, 255, 255, 0.9); padding: 15px 25px; border-radius: 20px; border: 2px dashed #ff4d88; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.2); line-height: 1.6;">Sekarang kita masuk ke sesi kuis ya sayangkuh...<br>Siap-siap! 📝💕</p>
         </div>
-        <div id="msg-2" class="pesan-benar">Pinter banget sih pacarku ini! 🥰 💕</div>
-    </div>
 
-    <!-- KUIS 3 -->
-    <div id="quiz-3" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
-        <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif; line-height: 1.4;">Kalau Risyad lagi pusing ngoding atau nugas, obatnya apa? 💻</h2>
-        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
-            <button onclick="alert('Bukan ini jawabannya! 👎')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Minum obat sakit kepala</button>
-            <button onclick="alert('Enak sih, tapi salah! 😂')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Tidur seharian</button>
-            <button onclick="document.getElementById('msg-3').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-3').style.display='none'; document.getElementById('quiz-4').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Disemangatin sama Frieza ❤️</button>
+        <!-- KUIS 1 -->
+        <div id="quiz-1" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+            <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif;">Aku siapa nyahh kamuhh??</h2>
+            <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
+                <button onclick="alert('Masa lupa sih? Coba lagi! 😤')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Selingkuhann</button>
+                <button onclick="document.getElementById('msg-1').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-1').style.display='none'; document.getElementById('quiz-2').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Your Boyfiee</button>
+                <button onclick="alert('Bukan dong! Ayo coba pikir lagi. 🤨')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Just friendds</button>
+            </div>
+            <div id="msg-1" class="pesan-benar">Hehehe bener sayangkuh! 😘</div>
         </div>
-        <div id="msg-3" class="pesan-benar">Tahu aja obat paling ampuh buat aku! ❤️ 💊</div>
-    </div>
 
-    <!-- KUIS 4 -->
-    <div id="quiz-4" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
-        <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif; line-height: 1.4;">Apa harapan terbesar Risyad buat kita ke depannya? ✨</h2>
-        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
-            <button onclick="document.getElementById('msg-4').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-4').style.display='none'; document.getElementById('quiz-5').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Langgeng terus & cepet ketemu! ✈️</button>
-            <button onclick="alert('Masa jawabannya ini? 🥺')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Biasa aja</button>
+        <!-- KUIS 2 -->
+        <div id="quiz-2" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+            <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif; line-height: 1.4;">Siapa cowok yang paling sayang kamuhh?</h2>
+            <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
+                <button onclick="alert('benerr sihh tapi salahhh😭')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">S.coups</button>
+                <button onclick="document.getElementById('msg-2').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-2').style.display='none'; document.getElementById('quiz-3').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">akuhhhh</button>
+                <button onclick="alert('jamalll kan cewee dangdutt😭')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Jamall</button>
+            </div>
+            <div id="msg-2" class="pesan-benar">Pinter banget sih pacarku ini! 🥰💕</div>
         </div>
-        <div id="msg-4" class="pesan-benar">Aminnn paling kenceng! Tunggu aku ya sayang... ✈️💕</div>
-    </div>
 
-    <!-- KUIS 5 -->
-    <div id="quiz-5" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
-        <h2 style="color: #ff4d88; font-size: 28px; margin-bottom: 30px; font-family: 'Playfair Display', serif;">Pertanyaan terakhir... Kamu sayang aku ngga?? 🥺</h2>
-        <div style="display: flex; gap: 20px; align-items: center; justify-content: center; position: relative; height: 100px; width: 100%;">
-            <button id="btn-yes" onclick="document.getElementById('msg-5').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-5').style.display='none'; document.getElementById('quiz-6').style.display='flex'; }, 1800);" style="padding: 15px 40px; border-radius: 30px; border: none; background: #ff4d88; color: white; font-weight: bold; font-size: 18px; cursor: pointer; transition: 0.3s; z-index: 100; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.35);">Yes ❤️</button>
-            <button id="btn-no" onclick="growNoButton()" style="padding: 15px 40px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; font-size: 18px; cursor: pointer; transition: transform 0.3s; position: relative; z-index: 1;">No 💔</button>
+        <!-- KUIS 3 -->
+        <div id="quiz-3" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+            <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif; line-height: 1.4;">Hal favorit akuhh??</h2>
+            <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
+                <button onclick="alert('Hah apa itu tugasss?😁')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Nugassss ☠️</button>
+                <button onclick="alert('Enak sih, tapi salah! 😂')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Tidurr😴</button>
+                <button onclick="document.getElementById('msg-3').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-3').style.display='none'; document.getElementById('quiz-4').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Video call sama kamuhh😋</button>
+            </div>
+            <div id="msg-3" class="pesan-benar">Pinter banget sih pacarku ini! 🥰💕</div>
         </div>
-        <div id="msg-5" class="pesan-benar">Iyaaa aku juga sayang banget sama kamu!! 😭💖</div>
-    </div>
 
-    <!-- KUIS 6 (SPOTIFY FLIP CARD) -->
-    <div id="quiz-6" style="display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; width: 100%; min-height: 100vh;">
-        <h2 style="color: #ff4d88; font-size: 22px; margin-bottom: 5px; font-family: 'Playfair Display', serif; text-align: center;">Sebelum buka suratnya, play dulu lagunya yah 🎧</h2>
-        <p style="color: #e62e70; font-size: 13px; font-weight: bold; margin-bottom: 25px; animation: pulse 2s infinite; text-align: center;">(Ketuk kartunya untuk membalik & melihat pesan rahasia! ✨)</p>
+        <!-- KUIS 4 -->
+        <div id="quiz-4" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+            <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif; line-height: 1.4;">Apa harapan terbesarku buat kita ke depannya? ✨</h2>
+            <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
+                <button onclick="document.getElementById('msg-4').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-4').style.display='none'; document.getElementById('quiz-5').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Selalu Langgeng terus & cepet ketemu!</button>
+                <button onclick="alert('Masa jawabannya ini? 🥺')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">ga punya malasss😒</button>
+            </div>
+            <div id="msg-4" class="pesan-benar">Aminnn paling kenceng! Tunggu aku ya sayang💕</div>
+        </div>
 
-        <style>
-            .flip-container { perspective: 1000px; width: 100%; max-width: 320px; margin-bottom: 30px; }
-            .flip-card { position: relative; width: 100%; height: 480px; transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
-            .flip-card.is-flipped { transform: rotateY(180deg); }
-            .flip-face { width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 24px; box-shadow: 0 15px 35px rgba(255, 77, 148, 0.25); box-sizing: border-box; overflow: hidden; }
-            .flip-front { background: linear-gradient(145deg, #2a151d, #1a0d12); padding: 20px; }
-            .flip-back { position: absolute; top: 0; left: 0; background: #ffffff; border: 2px dashed #ff4d88; padding: 25px 20px 20px 20px; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: flex-start; }
-            @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        </style>
+        <!-- KUIS 5 -->
+        <div id="quiz-5" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+            <h2 style="color: #ff4d88; font-size: 28px; margin-bottom: 30px; font-family: 'Playfair Display', serif;">Pertanyaan terakhir... Kamu sayang aku ngga??🥺</h2>
+            <div style="display: flex; gap: 20px; align-items: center; justify-content: center; position: relative; height: 100px; width: 100%;">
+                <button id="btn-yes" onclick="document.getElementById('msg-5').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-5').style.display='none'; document.getElementById('quiz-6').style.display='flex'; }, 1800);" style="padding: 15px 40px; border-radius: 30px; border: none; background: #ff4d88; color: white; font-weight: bold; font-size: 18px; cursor: pointer; transition: 0.3s; z-index: 100; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.35);">Yes ❤️</button>
+                <button id="btn-no" onclick="growNoButton()" style="padding: 15px 40px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; font-size: 18px; cursor: pointer; transition: transform 0.3s; position: relative; z-index: 1;">No 💔</button>
+            </div>
+            <div id="msg-5" class="pesan-benar">Iyaaa aku juga sayang banget sama kamu!! 😭💖</div>
+        </div>
 
-        <div class="flip-container" onclick="document.getElementById('spotify-card').classList.toggle('is-flipped')">
-            <div id="spotify-card" class="flip-card">
-                
-                <!-- SISI DEPAN -->
-                <div class="flip-face flip-front">
-                    <img src="assets/img1.jpeg" style="width: 100%; aspect-ratio: 1/1; border-radius: 12px; object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                    <div style="margin-top: 20px; text-align: left;">
-                        <h3 style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff;">Shape of My Heart</h3>
-                        <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffb3c6;">Backstreet Boys</p>
+        <!-- KUIS 6 (SPOTIFY FLIP CARD) -->
+        <div id="quiz-6" style="display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; width: 100%; min-height: 100vh;">
+            <p style="color: #e62e70; font-size: 13px; font-weight: bold; margin-bottom: 25px; animation: pulse 2s infinite; text-align: center;">(Ketuk kartunya untuk ada sesuatu dibelakang)</p>
+
+            <div class="flip-container" onclick="document.getElementById('spotify-card').classList.toggle('is-flipped')">
+                <div id="spotify-card" class="flip-card">
+                    <!-- SISI DEPAN -->
+                    <div class="flip-face flip-front">
+                        <img src="assets/coverspotify.jpg" style="width: 100%; aspect-ratio: 1/1; border-radius: 12px; object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                        <div style="margin-top: 20px; text-align: left;">
+                            <h3 style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff;">Shape of My Heart</h3>
+                            <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffb3c6;">Backstreet Boys</p>
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 25px;">
+                            <span style="color: #ffb3c6; display: flex; align-items: center;"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></span>
+                            <button id="btn-play-spotify" onclick="event.stopPropagation(); let audio = document.getElementById('bg-music'); let iconPlay = document.getElementById('icon-play'); let iconPause = document.getElementById('icon-pause'); if(audio.paused){audio.play(); iconPlay.style.display='none'; iconPause.style.display='block';}else{audio.pause(); iconPlay.style.display='block'; iconPause.style.display='none';}" style="background: #ff4d88; color: white; border: none; border-radius: 50%; width: 64px; height: 64px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.4);">
+                                <svg id="icon-play" viewBox="0 0 24 24" width="34" height="34" fill="currentColor" style="display: block; margin-left: 4px;"><path d="M8 5v14l11-7z"/></svg>
+                                <svg id="icon-pause" viewBox="0 0 24 24" width="34" height="34" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                            </button>
+                            <span style="color: #ffb3c6; display: flex; align-items: center;"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></span>
+                        </div>
                     </div>
-                    
-                    <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 25px;">
-                        <span style="color: #ffb3c6; display: flex; align-items: center;"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></span>
-                        <button id="btn-play-spotify" onclick="event.stopPropagation(); let audio = document.getElementById('bg-music'); let iconPlay = document.getElementById('icon-play'); let iconPause = document.getElementById('icon-pause'); if(audio.paused){audio.play(); iconPlay.style.display='none'; iconPause.style.display='block';}else{audio.pause(); iconPlay.style.display='block'; iconPause.style.display='none';}" style="background: #ff4d88; color: white; border: none; border-radius: 50%; width: 64px; height: 64px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.4);">
-                            <svg id="icon-play" viewBox="0 0 24 24" width="34" height="34" fill="currentColor" style="display: block; margin-left: 4px;"><path d="M8 5v14l11-7z"/></svg>
-                            <svg id="icon-pause" viewBox="0 0 24 24" width="34" height="34" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                        </button>
-                        <span style="color: #ffb3c6; display: flex; align-items: center;"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></span>
+                    <!-- SISI BELAKANG -->
+                    <div class="flip-face flip-back">
+                        <h3 style="color: #ff4d88; font-family: 'Playfair Display', serif; font-size: 18px; margin-top: 0; margin-bottom: 10px; text-align: left;">Our Song 🎶</h3>
+                        <p style="font-size: 12px; font-style: italic; background: #fff5f8; padding: 10px; border-left: 4px solid #ff4d88; border-radius: 8px; margin-bottom: 15px; color: #351522; line-height: 1.5; text-align: left;">"Looking back on the things I've done<br>I was trying to be someone<br>I played my part, kept you in the dark<br>Now let me show you the shape of my heart"</p>
+                        <h4 style="color: #ff4d88; font-size: 13px; margin-bottom: 5px; text-align: left;">Kenapa aku pilih lagu ini?</h4>
+                        <p style="font-size: 12px; color: #4a4a4a; line-height: 1.5; margin: 0; text-align: left;">Lagu ini bener-bener pas buat ngegambarin perasaanku ke kamu sayangg, Dutt. Walaupun kita LDR dan aku kadang sibuk, tapi jauh di dalam hatiku aku selalu mikirin kamu. Lewat hadiah kecil ini, aku pengen nunjukin <b>"The shape of my heart"</b> yang isinya cuma rasa sayang dan syukur punya kamu.</p>
+                        
+<!-- TOMBOL LANJUT BUKA SURAT (Versi Bersih Anti-Tabrakan) -->
+<button class="btn-primary" onclick="
+    event.stopPropagation();
+    
+    /* 1. Tutup layar kuis overlay */
+    document.getElementById('quiz-overlay').style.display = 'none';
+    
+    /* 2. Kembalikan fungsi scroll yang tadinya dikunci */
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    
+    /* 3. BERSIHKAN gaya paksaan yang bikin tumpang tindih! */
+    let introSection = document.getElementById('section-intro');
+    if (introSection) {
+        introSection.style = ''; 
+    }
+    
+    let mainApp = document.getElementById('app');
+    if (mainApp) {
+        mainApp.style = '';
+    }
+    
+    /* 4. Pastikan layar kembali ke posisi paling atas */
+    window.scrollTo(0, 0);
+    
+" style="margin-top: auto; display: flex !important; justify-content: center; align-items: center; gap: 10px; width: 100%; border: none;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+</button>
                     </div>
                 </div>
-
-                <!-- SISI BELAKANG -->
-                <div class="flip-face flip-back">
-                    <h3 style="color: #ff4d88; font-family: 'Playfair Display', serif; font-size: 18px; margin-top: 0; margin-bottom: 10px; text-align: left;">Our Song 🎶</h3>
-                    <p style="font-size: 12px; font-style: italic; background: #fff5f8; padding: 10px; border-left: 4px solid #ff4d88; border-radius: 8px; margin-bottom: 15px; color: #351522; line-height: 1.5; text-align: left;">"Looking back on the things I've done<br>I was trying to be someone<br>I played my part, kept you in the dark<br>Now let me show you the shape of my heart"</p>
-                    <h4 style="color: #ff4d88; font-size: 13px; margin-bottom: 5px; text-align: left;">Kenapa aku pilih lagu ini?</h4>
-                    <p style="font-size: 12px; color: #4a4a4a; line-height: 1.5; margin: 0; text-align: left;">Lagu ini bener-bener pas buat ngegambarin perasaanku ke kamu, Frieza. Walaupun LDR dan aku kadang sibuk, tapi jauh di dalam hatiku cuma ada kamu. Lewat kado ini, aku pengen nunjukin <b>"The shape of my heart"</b> yang isinya cuma rasa sayang dan syukur punya kamu.</p>
-                    
-<!-- TOMBOL LANJUT YANG SUDAH DIPERBAIKI TOTAL (Anti Blank & Auto Scroll) -->
-                    <button class="btn-primary" onclick="event.stopPropagation(); document.getElementById('quiz-overlay').style.display='none'; let amplop = document.querySelector('section') || document.body; amplop.scrollIntoView({behavior: 'instant', block: 'start'}); window.scrollTo(0, 0);" style="margin-top: auto; display: flex !important; justify-content: center; align-items: center; gap: 10px; width: 100%; border: none;">
-                        <span>Lanjut Buka Surat</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                </div>
-
             </div>
         </div>
-
     </div>
-</div>
+
 
     <!-- Floating Canvas Particles -->
     <canvas id="canvas-sparks" aria-hidden="true"></canvas>
-
-    <!-- Progress Navigation Dots -->
-
 
     <!-- Top Floating Controls -->
     <div class="top-controls">
@@ -262,8 +262,6 @@
     </div>
 
     <main class="app-container" id="app">
-
-        
 
         <!-- ═══════════════════════════════════════════ -->
         <!-- SECTION 1: ENVELOPE INVITATION (INTRO)     -->
@@ -311,7 +309,7 @@
             </div>
         </section>
 
-        <!-- ═══════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════ -->
         <!-- SECTION 2: DIARY                           -->
         <!-- ═══════════════════════════════════════════ -->
 
@@ -330,73 +328,50 @@
 
                             <!-- Moon & Constellation Decoration -->
                             <div class="diary-constellation" aria-hidden="true">
-                                <svg width="110" height="72" viewBox="0 0 110 72" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Glowing halo -->
+                                <svg width="110" height="72" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="55" cy="36" r="26" fill="rgba(255,215,0,0.07)" />
-                                    <!-- Crescent moon -->
-                                    <path
-                                        d="M55 14 C70 14 81 24 81 36 C81 48 70 58 55 58 C64 53 69 45 69 36 C69 27 64 19 55 14Z"
-                                        fill="#ffd700" opacity="0.92" />
-                                    <!-- Tiny star dots scattered -->
+                                    <path d="M55 14 C70 14 81 24 81 36 C81 48 70 58 55 58 C64 53 69 45 69 36 C69 27 64 19 55 14Z" fill="#ffd700" opacity="0.92" />
                                     <circle cx="14" cy="14" r="2.2" fill="white" opacity="0.75" />
                                     <circle cx="92" cy="20" r="1.8" fill="#ffd700" opacity="0.8" />
                                     <circle cx="10" cy="50" r="1.5" fill="white" opacity="0.55" />
                                     <circle cx="96" cy="54" r="2" fill="white" opacity="0.65" />
                                     <circle cx="25" cy="62" r="1.2" fill="#ffd700" opacity="0.6" />
                                     <circle cx="84" cy="8" r="1.2" fill="white" opacity="0.7" />
-                                    <!-- Sparkle crosses -->
-                                    <line x1="14" y1="11" x2="14" y2="17" stroke="white" stroke-width="0.9"
-                                        opacity="0.6" />
-                                    <line x1="11" y1="14" x2="17" y2="14" stroke="white" stroke-width="0.9"
-                                        opacity="0.6" />
-                                    <line x1="92" y1="17" x2="92" y2="23" stroke="#ffd700" stroke-width="0.9"
-                                        opacity="0.7" />
-                                    <line x1="89" y1="20" x2="95" y2="20" stroke="#ffd700" stroke-width="0.9"
-                                        opacity="0.7" />
-                                    <!-- Constellation connecting lines -->
-                                    <line x1="14" y1="14" x2="92" y2="20" stroke="rgba(255,215,0,0.18)"
-                                        stroke-width="0.7" stroke-dasharray="3 4" />
-                                    <line x1="10" y1="50" x2="25" y2="62" stroke="rgba(255,255,255,0.15)"
-                                        stroke-width="0.7" stroke-dasharray="3 4" />
+                                    <line x1="14" y1="11" x2="14" y2="17" stroke="white" stroke-width="0.9" opacity="0.6" />
+                                    <line x1="11" y1="14" x2="17" y2="14" stroke="white" stroke-width="0.9" opacity="0.6" />
+                                    <line x1="92" y1="17" x2="92" y2="23" stroke="#ffd700" stroke-width="0.9" opacity="0.7" />
+                                    <line x1="89" y1="20" x2="95" y2="20" stroke="#ffd700" stroke-width="0.9" opacity="0.7" />
+                                    <line x1="14" y1="14" x2="92" y2="20" stroke="rgba(255,215,0,0.18)" stroke-width="0.7" stroke-dasharray="3 4" />
+                                    <line x1="10" y1="50" x2="25" y2="62" stroke="rgba(255,255,255,0.15)" stroke-width="0.7" stroke-dasharray="3 4" />
                                 </svg>
                             </div>
 
-                            <!-- Ornamental divider top -->
                             <div class="diary-ornament" aria-hidden="true">
                                 <svg width="140" height="14" viewBox="0 0 140 14" fill="none">
-                                    <line x1="0" y1="7" x2="52" y2="7" stroke="#ffd700" stroke-width="0.9"
-                                        opacity="0.45" />
+                                    <line x1="0" y1="7" x2="52" y2="7" stroke="#ffd700" stroke-width="0.9" opacity="0.45" />
                                     <circle cx="58" cy="7" r="2" fill="#ffd700" opacity="0.6" />
                                     <circle cx="70" cy="7" r="3.8" fill="#ffd700" opacity="0.95" />
                                     <circle cx="82" cy="7" r="2" fill="#ffd700" opacity="0.6" />
-                                    <line x1="88" y1="7" x2="140" y2="7" stroke="#ffd700" stroke-width="0.9"
-                                        opacity="0.45" />
+                                    <line x1="88" y1="7" x2="140" y2="7" stroke="#ffd700" stroke-width="0.9" opacity="0.45" />
                                 </svg>
                             </div>
 
                             <p class="diary-cover-label">My Secret Diary</p>
 
-                            <!-- Ornamental divider bottom -->
                             <div class="diary-ornament" aria-hidden="true">
                                 <svg width="140" height="14" viewBox="0 0 140 14" fill="none">
-                                    <line x1="0" y1="7" x2="52" y2="7" stroke="#ffd700" stroke-width="0.9"
-                                        opacity="0.45" />
+                                    <line x1="0" y1="7" x2="52" y2="7" stroke="#ffd700" stroke-width="0.9" opacity="0.45" />
                                     <circle cx="58" cy="7" r="2" fill="#ffd700" opacity="0.6" />
                                     <circle cx="70" cy="7" r="3.8" fill="#ffd700" opacity="0.95" />
                                     <circle cx="82" cy="7" r="2" fill="#ffd700" opacity="0.6" />
-                                    <line x1="88" y1="7" x2="140" y2="7" stroke="#ffd700" stroke-width="0.9"
-                                        opacity="0.45" />
+                                    <line x1="88" y1="7" x2="140" y2="7" stroke="#ffd700" stroke-width="0.9" opacity="0.45" />
                                 </svg>
                             </div>
 
-                            <!-- Detailed Mechanical Lock -->
                             <div class="diary-lock" id="diary-lock" aria-hidden="true">
                                 <svg width="34" height="42" viewBox="0 0 34 42" fill="none">
-                                    <rect x="2" y="14" width="30" height="26" rx="6" fill="#ffd700" stroke="#daa520"
-                                        stroke-width="2" />
-                                    <path d="M9 14V9a8 8 0 0 1 16 0v5" stroke="#ffd700" stroke-width="3"
-                                        stroke-linecap="round" fill="none" />
+                                    <rect x="2" y="14" width="30" height="26" rx="6" fill="#ffd700" stroke="#daa520" stroke-width="2" />
+                                    <path d="M9 14V9a8 8 0 0 1 16 0v5" stroke="#ffd700" stroke-width="3" stroke-linecap="round" fill="none" />
                                     <circle cx="17" cy="25" r="4" fill="#351522" />
                                     <path d="M17 29V34" stroke="#351522" stroke-width="3" stroke-linecap="round" />
                                 </svg>
@@ -410,68 +385,63 @@
                         <div class="diary-pages-stack"></div>
                         <div class="diary-lines" aria-hidden="true"></div>
                         <div class="diary-text">
-                            <div class="diary-carousel" id="diary-carousel">
-                                <div class="diary-page active" data-page="0">
-                                <p class="diary-date" id="tanggal">4 SEPTEMBER 2026</p>
+                            <div class="diary-carousel" id="diary-carousel" style="position: relative; width: 100%; height: 100%;">
+                                
+                                <!-- CSS Tambahan Efek Halaman -->
+                                <style>
+                                    @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+                                    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+                                    .page-turn-next { animation: slideInRight 0.5s ease forwards; }
+                                    .page-turn-prev { animation: slideInLeft 0.5s ease forwards; }
+                                    .btn-page { background: #ff4d88; color: white; border: none; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-top: 10px; font-size: 12px; box-shadow: 0 4px 10px rgba(255,77,136,0.3); transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+                                    .btn-page:active { transform: scale(0.95); }
+                                </style>
 
-                                <h3 class="diary-salute">🥳 SELAMAT ULANG TAHUN YAA! 🎂🎉🤍</h3>
+                                <!-- HALAMAN 1 -->
+                                <div id="diary-page-1" style="display: block;">
+                                    <p class="diary-date" id="tanggal">4 SEPTEMBER 2026</p>
+                                    <h3 class="diary-salute" style="font-size: 18px; margin-top: 5px;">HAPPY 20TH BIRTHDAY! 🥳</h3>
 
-                                <div class="diary-handwritten-body" id="diary-handwritten-body">
-
-                                    <p>
-                                        Helloo, Happyy Birthdayy My Sweetheart!! 🥳🎂🤍
-                                    </p>
-
-                                    <p>
-                                        First off, I just wanna say how grateful I am for everything you’ve fought for so far.
-                                        You’ve worked so hard to get to where you are today, but your journey is still long,
-                                        so please don't get comfortable just yet! 💫 Thank you for doing so much for yourself
-                                        and for us. 🪷🪷
-                                    </p>
-
-                                    <p>
-                                        BTW, HAPPY BIRTHDAYYY! ASLIII YAHH, you are literally SO AMAZING today!
-                                        Like, how can you even be this cool!!!!!! 😭🤍
-                                    </p>
-
-                                    <p>
-                                        Please take care of your health, live a long & happy life, and I hope God makes
-                                        everything easier for you moving forward. ✨ I’m saying this straight from my heart
-                                        because I’m genuinely so proud of all your achievements so far.
-                                    </p>
-
-                                    <p>
-                                        You’re incredible, and I know you’ll keep making everyone around you proud and be
-                                        someone who truly matters to the community! 🫶🏻
-                                    </p>
-
-                                    <p>
-                                        Thank you for always being true to yourself and for handling every problem like a champ! 🏆
-                                        I'm super proud of you.
-                                    </p>
-
-                                    <p>
-                                        HAPPY BIRTHDAY GEMASSSS GEMASS!!! 🥳🎂🎉🤍
-                                    </p>
-
+                                    <div class="diary-handwritten-body" style="font-size: 14px; line-height: 1.6;">
+                                        <p>Ciee Ada yang ultahh nih..🤭</p>
+                                        <p>Maaf yahh hadiahnyahh kecil tapi semoga kamu suka🤍</p>
+                                        <p>Di hari spesial ini, aku pengen banget nulis sesuatu yang panjang buat kamu, karena kamu berhak dapet semua apresiasi dan cinta di dunia ini.</p>
+                                        <p>Pertama, aku mau bilang betapa bangganya aku sama kamu. Terima kasih udah berjuang hebat sampai di titik ini. Terima kasih udah selalu sabar ngadepin yang nyebelinn inih, jarak LDR kita, dan kesibukanku.</p>
+                                        <p>Waktu aku lagi burn out atau down, kamu bener-bener jadi <i>support system</i> buat aku. Kamu luar biasa, sayang! 😭🫶🏼</p>
+                                        
+                                        <div style="text-align: right; margin-top: 15px;">
+                                            <button class="btn-page" onclick="event.stopPropagation(); document.getElementById('diary-page-1').style.display='none'; let p2 = document.getElementById('diary-page-2'); p2.style.display='block'; p2.classList.remove('page-turn-prev'); p2.classList.add('page-turn-next');">Halaman 2 ➡</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- PESAN SUARA -->
-<audio id="voice-note" src="assets/voicenote.mp3" onended="document.getElementById('bg-music').volume = 1.0;"></audio>
-<button onclick="document.getElementById('bg-music').volume = 0.15; document.getElementById('voice-note').play(); alert('Ssst... dengerin ya! 🤫');" style="margin-top: 15px; padding: 10px; border-radius: 20px; background: #ff4d88; color: white; font-weight: bold; border: none; cursor: pointer; width: 100%; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.3);">
-    ▶️ Dengerin Suaraku
-</button>
-                                <p class="diary-sign">
-                                    With love ♥
-                                </p>
-                            </div>
 
+                                <!-- HALAMAN 2 -->
+                                <div id="diary-page-2" style="display: none;">
+                                    <h3 class="diary-salute" style="font-size: 18px; margin-top: 15px;">✨ LITTE WISH FOR U ✨</h3>
+
+                                    <div class="diary-handwritten-body" style="font-size: 14px; line-height: 1.6;">
+                                        <p>Di umur kamu yang kepala dua inihhhh</p>
+                                        <p>Aku Berdoa dimanapun kamu berada selalu sehat dan bahagia selalu.</p>
+                                        <p>Semoga cita cita yang kamu ingin wujudkan akan terwujudkan semua.</p>
+                                        <p>Menjadi anak yang berbakti ke orang tua dan menepati janji dari amihmuu🥹.</p>
+                                        <p>Semoga hubungan kita makin kuat, langgeng terus, dan kita bisa cepet-cepet ketemu yahh sayanggg🥹</p>
+                                        <p>Sama seperti kamu, aku akan selalu hadir dan selalu disamping mu dikondisi apapun kamuhh dan butuh aku❤️.</p>
+                                        <p>Terima kasih udah lahir ke dunia ini dan jadi my favorite personn. I love you more than words can say! 💖</p>
+                                        
+                                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px;">
+                                            <button class="btn-page" style="background: white; color: #ff4d88; border: 2px solid #ff4d88;" onclick="event.stopPropagation(); document.getElementById('diary-page-2').style.display='none'; let p1 = document.getElementById('diary-page-1'); p1.style.display='block'; p1.classList.remove('page-turn-next'); p1.classList.add('page-turn-prev');">⬅ Balik</button>
+                                            <p class="diary-sign" style="margin: 0; font-family: 'Caveat', cursive; font-size: 18px; color: #ff4d88;">Your boyfiee♥</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <button id="btn-diary-next" class="btn-primary btn--hidden hidden">
-                <span>Our Memories</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7" />
@@ -483,24 +453,21 @@
         <!-- SECTION 3: INTERACTIVE POLAROID GALLERY    -->
         <!-- ═══════════════════════════════════════════ -->
         <section id="section-gallery" class="section" data-index="2">
-            <h2 class="section-title">Our Memories 📸</h2>
+            <h2 class="section-title">My Favorite Person🌸</h2>
             <p class="section-subtitle">Kamu harus tarik dan lempar fotonya :D</p>
 
             <div class="polaroid-stack-container">
-                <div class="polaroid-stack" id="polaroid-stack">
-                    <!-- Loaded dynamically via JS for touch-swipe interactions -->
-                </div>
+                <div class="polaroid-stack" id="polaroid-stack"></div>
             </div>
 
-    <!-- Progress Bar Berjalan -->
-<div style="width: 100%; height: 30px;"></div>
+            <div style="width: 100%; height: 30px;"></div>
 
-        <button id="btn-gallery-next" class="btn-primary" style="margin: 0 auto; display: flex !important; justify-content: center; align-items: center; width: max-content !important; padding: 15px 40px; border-radius: 30px; gap: 10px;">
-            <span>Time for Cake!</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-        </button>
+            <button id="btn-gallery-next" class="btn-primary" style="margin: 0 auto; display: flex !important; justify-content: center; align-items: center; width: max-content !important; padding: 15px 40px; border-radius: 30px; gap: 10px;">
+                <span>Time for Cake!</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </button>
         </section>
 
         <!-- ═══════════════════════════════════════════ -->
@@ -508,131 +475,80 @@
         <!-- ═══════════════════════════════════════════ -->
         <section id="section-cake" class="section" data-index="3">
             <h2 class="section-title" id="cake-title">Time for Cake!</h2>
-            <p class="section-subtitle" id="cake-subtitle">Kuenya versi ini dulu ya. tapi tetep lucu, kan?</p>
+            <p class="section-subtitle" id="cake-subtitle">Kuenya versi ini dulu ya. tapi tetep lucu kan? hehehe</p>
+            <p class="section-subtitle" id="cake-subtitle">Sebelum potong kuenya berdoa dulu yahhh sayanggg dan tulisin harapan kamu</p>
 
             <div class="cake-wrapper">
-                <!-- SVG Birthday Cake with luxury detailing -->
                 <div class="cake-svg-container" id="cake-svg-container">
-                    <svg id="cake-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg"
-                        aria-label="Birthday cake" role="img">
-                        <!-- Plate -->
+                    <svg id="cake-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" aria-label="Birthday cake" role="img">
                         <ellipse cx="150" cy="255" rx="135" ry="16" fill="#ffd6eb" opacity="0.6" />
                         <ellipse cx="150" cy="255" rx="120" ry="10" fill="#fff" opacity="0.3" />
-
-                        <!-- Bottom Tier (Ocean Blue Cream Layers) -->
                         <rect x="30" y="170" width="240" height="80" rx="12" fill="#ff80b3" />
-                        <!-- Cream filling middle bottom -->
                         <rect x="30" y="210" width="240" height="8" fill="#ffd6eb" opacity="0.9" />
-                        <!-- Cream icing top bottom -->
                         <rect x="30" y="170" width="240" height="15" rx="5" fill="#ffd6eb" />
-                        <!-- Dots bottom tier -->
                         <circle cx="70" cy="225" r="5" fill="#fff" opacity="0.8" />
                         <circle cx="110" cy="235" r="4" fill="#ffeb99" opacity="0.9" />
                         <circle cx="150" cy="220" r="6" fill="#fff" opacity="0.8" />
                         <circle cx="190" cy="232" r="5" fill="#ffeb99" opacity="0.9" />
                         <circle cx="230" cy="225" r="5" fill="#fff" opacity="0.8" />
-
-                        <!-- Bottom frosting drips -->
-                        <path
-                            d="M30 175 C50 195, 60 165, 80 185 C100 205, 120 165, 140 185 C160 205, 180 165, 200 185 C220 205, 240 165, 270 175"
-                            fill="none" stroke="#fff5f8" stroke-width="8" stroke-linecap="round" opacity="0.8" />
-
-                        <!-- Middle Tier -->
+                        <path d="M30 175 C50 195, 60 165, 80 185 C100 205, 120 165, 140 185 C160 205, 180 165, 200 185 C220 205, 240 165, 270 175" fill="none" stroke="#fff5f8" stroke-width="8" stroke-linecap="round" opacity="0.8" />
                         <rect x="60" y="105" width="180" height="65" rx="10" fill="#ff4d94" />
                         <rect x="60" y="132" width="180" height="6" fill="#ff80b3" opacity="0.9" />
                         <rect x="60" y="105" width="180" height="12" rx="4" fill="#ff80b3" />
-                        <!-- Stars middle tier -->
                         <text x="85" y="145" font-size="14" fill="#ffeb99" opacity="0.9">✦</text>
                         <text x="130" y="152" font-size="10" fill="#fff" opacity="0.8">✦</text>
                         <text x="170" y="140" font-size="16" fill="#ffeb99" opacity="0.9">✦</text>
                         <text x="210" y="148" font-size="12" fill="#fff" opacity="0.8">✦</text>
-
-                        <!-- Top Tier -->
                         <rect x="90" y="55" width="120" height="50" rx="8" fill="#ff80b3" />
                         <rect x="90" y="55" width="120" height="10" rx="3" fill="#ffd6eb" />
-                        <!-- Heart top tier -->
-                        <path
-                            d="M150 82 C150 82 135 70 135 62 C135 57 140 54 145 57 C147 58 149 60 150 62 C151 60 153 58 155 57 C160 54 165 57 165 62 C165 70 150 82 150 82Z"
-                            fill="#ff4d94" />
-
-                        <!-- Candle 1 -->
+                        <path d="M150 82 C150 82 135 70 135 62 C135 57 140 54 145 57 C147 58 149 60 150 62 C151 60 153 58 155 57 C160 54 165 57 165 62 C165 70 150 82 150 82Z" fill="#ff4d94" />
                         <rect x="119" y="32" width="10" height="24" rx="4" fill="#ffef9f" />
                         <ellipse cx="124" cy="26" rx="4.5" ry="7" fill="#ffa726" class="flame" />
                         <ellipse cx="124" cy="27" rx="2.5" ry="4.5" fill="#ff3d00" class="flame" />
-
-                        <!-- Candle 2 (Center - Glowing Gold) -->
                         <rect x="145" y="24" width="10" height="32" rx="4" fill="#ffd6eb" />
                         <ellipse cx="150" cy="18" rx="5" ry="8" fill="#ffd54f" class="flame" id="flame-main" />
                         <ellipse cx="150" cy="19" rx="3" ry="5.5" fill="#ff6d00" class="flame" />
-
-                        <!-- Candle 3 -->
                         <rect x="171" y="32" width="10" height="24" rx="4" fill="#ffe6f0" />
                         <ellipse cx="176" cy="26" rx="4.5" ry="7" fill="#ffa726" class="flame" />
                         <ellipse cx="176" cy="27" rx="2.5" ry="4.5" fill="#ff3d00" class="flame" />
-
-                        <!-- Cut line overlay -->
-                        <line id="cut-line" x1="150" y1="55" x2="150" y2="250" stroke="#351522" stroke-width="4"
-                            stroke-dasharray="10 6" stroke-linecap="round" opacity="0" />
-
-                        <!-- Slice that slides out -->
+                        <line id="cut-line" x1="150" y1="55" x2="150" y2="250" stroke="#351522" stroke-width="4" stroke-dasharray="10 6" stroke-linecap="round" opacity="0" />
                         <g id="cake-slice" opacity="0">
-                            <!-- Left Slice Offset -->
                             <path d="M150 55 L210 55 L210 240 L150 240 Z" fill="#ff80b3" opacity="0.1" />
                         </g>
                     </svg>
-                    <!-- Custom Glowing Knife Wand -->
                     <div class="knife-wand" id="knife-wand">✨🔪</div>
                 </div>
-
-                <!-- Drag interaction zone -->
                 <div class="cut-zone" id="cut-zone" role="button" aria-label="Drag to cut the cake" tabindex="0">
-                    <div class="cut-hint" id="cut-hint">
-                        <span>Geser untuk memotong kue!</span>
-                    </div>
+                    <div class="cut-hint" id="cut-hint"><span>Geser untuk memotong kue!</span></div>
                     <div class="cut-progress-bar" id="cut-progress-bar"></div>
                 </div>
             </div>
 
-<!-- ========================================== -->
-            <!-- 1. CSS TAMBAHAN UNTUK MEMPERBESAR BUKU DIARY -->
-            <style>
-                .diary-scene { transform: scale(1.15) !important; transform-origin: top center; margin-top: 25px; }
-                .diary-paper p { font-size: 14px !important; font-weight: 600 !important; line-height: 1.7 !important; color: #351522 !important; }
-            </style>
-            <!-- ========================================== -->
-
-            <!-- 2. KOLOM KETIK HARAPAN FRIEZA -->
+            <!-- KOLOM KETIK HARAPAN -->
             <textarea id="frieza-wish" placeholder="Ketik harapan kamu di sini ya sayang..." style="width: 100%; max-width: 280px; height: 80px; background: rgba(255,255,255,0.9); border: 2px dashed #ff4d88; border-radius: 15px; padding: 15px; font-family: 'Quicksand', sans-serif; font-size: 14px; color: #ff4d88; resize: none; margin: 15px auto 25px auto; display: block; text-align: center; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.1); outline: none;"></textarea>
 
-            <!-- 3. TOMBOL CUSTOM (Mengecek ketikan sebelum lanjut) -->
             <button type="button" onclick="submitWish()" style="padding: 15px 40px; border-radius: 30px; border: none; background: linear-gradient(135deg, #ff4d88, #e62e70); color: white; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.35); display: flex; justify-content: center; align-items: center; gap: 10px; margin: 0 auto;">
-
+                <span>Make a Wish</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
             </button>
 
-            <!-- 4. LOGIKA JAVASCRIPT -->
             <script>
                 function submitWish() {
                     let wish = document.getElementById('frieza-wish').value;
                     if(wish.trim() === '') {
                         alert('Eits, ketik dulu dong harapannya buat kita! 🥺');
                     } else {
-                        // Menampilkan alert yang memuat harapan Frieza
-                        alert('Aminnn paling kenceng!✨\n\nHarapan: "' + wish + '"\n\nUdah Risyad aminkan dari jauh! Sekarang pecahin gelembungnya ya!');
-                        
-                        // Sistem secara otomatis memencet tombol asli bawaan template
+                        alert('Aminnn paling kenceng!✨\n\nHarapan: "' + wish + '"\n\nUdah aku aminkan dari jauh sayangggg! Sekarang pecahin gelembungnya ya!');
                         document.getElementById('btn-cake-next').click();
                     }
                 }
             </script>
 
-            <!-- 5. TOMBOL ASLI TEMPLATE (Disembunyikan dengan style="display: none !important;") -->
             <button id="btn-cake-next" class="btn-primary btn--hidden" style="display: none !important;">
                 <span>Make a Wish</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
             </button>
@@ -643,42 +559,29 @@
         <!-- ═══════════════════════════════════════════ -->
         <section id="section-wish" class="section" data-index="4">
             <h2 class="section-title">Floating Wishes</h2>
-            <p class="section-subtitle">Pecahkan gelembung sabun kaca 3D untuk mengabulkan harapanmu! 🫧</p>
+            <p class="section-subtitle">Pecahkan gelembungnya sayanggg! 🫧</p>
 
             <div class="wish-field" id="wish-field">
-                <div class="wish-bubble" style="--wx:15%;--wy:15%;--dur:5.2s;"
-                    data-msg="Please take good care of yourself. eat well, rest enough, and stay healthy!">
-                    <span class="bubble-spark"></span>
-                    Stay Healthy
+                <div class="wish-bubble" style="--wx:15%;--wy:15%;--dur:5.2s;" data-msg="Please take good care of yourself. eat well, rest enough, and stay healthy!">
+                    <span class="bubble-spark"></span> Stay Healthy
                 </div>
-                <div class="wish-bubble" style="--wx:62%;--wy:10%;--dur:4.5s;"
-                    data-msg="Of course, aku selalu jadi salah satu yang pengen selalu ngeliat kamu happy. jadi, senantiasa bahagia, ya? ">
-                    <span class="bubble-spark"></span>
-                    Stay Happy
+                <div class="wish-bubble" style="--wx:62%;--wy:10%;--dur:4.5s;" data-msg="Of course, aku selalu jadi salah satu yang pengen selalu ngeliat kamu happy. jadi, senantiasa bahagia, ya? ">
+                    <span class="bubble-spark"></span> Stay Happy
                 </div>
-                <div class="wish-bubble" style="--wx:32%;--wy:40%;--dur:4.8s;"
-                    data-msg="You have a big dreams, and I believe in you. kamu juga harus percaya, kalo setiap mimpi yang kamu punya, akan selalu ada jalan buat jadi kenyataan! fighting!">
-                    <span class="bubble-spark"></span>
-                    Dream Big
+                <div class="wish-bubble" style="--wx:32%;--wy:40%;--dur:4.8s;" data-msg="You have a big dreams, and I believe in you. kamu juga harus percaya, kalo setiap mimpi yang kamu punya, akan selalu ada jalan buat jadi kenyataan! fighting!">
+                    <span class="bubble-spark"></span> Dream Big
                 </div>
-                <div class="wish-bubble" style="--wx:70%;--wy:45%;--dur:5.5s;"
-                    data-msg="Wishing yoy all the succes in the world. aku selalu bangga sama setiap pencapaian kamu, apa pun.">
-                    <span class="bubble-spark"></span>
-                    Be Successful
+                <div class="wish-bubble" style="--wx:70%;--wy:45%;--dur:5.5s;" data-msg="Wishing yoy all the succes in the world. aku selalu bangga sama setiap pencapaian kamu, apa pun.">
+                    <span class="bubble-spark"></span> Be Successful
                 </div>
-                <div class="wish-bubble" style="--wx:8%;--wy:68%;--dur:6s;"
-                    data-msg="Aku harap, kamu selalu di kelilingi orang-orang yang sayang sama kamu, yang tulus sama kamu. yang bisa kasih kamu rasa hangat, rasa nyaman. dan juga, jadi yang penuh cinta. buat diri kamu sendiri, buat orang-orang di sekitar kamu.">
-                    <span class="bubble-spark"></span>
-                    Always Loved
+                <div class="wish-bubble" style="--wx:8%;--wy:68%;--dur:6s;" data-msg="Aku harap, kamu selalu di kelilingi orang-orang yang sayang sama kamu, yang tulus sama kamu. yang bisa kasih kamu rasa hangat, rasa nyaman. dan juga, jadi yang penuh cinta. buat diri kamu sendiri, buat orang-orang di sekitar kamu.">
+                    <span class="bubble-spark"></span> Always Loved
                 </div>
-                <div class="wish-bubble" style="--wx:65%;--wy:72%;--dur:4s;"
-                    data-msg="Aku enggak akan bosen bilang, kalo aku seneng bertemu kamu. jadi, makasih udah hadir di kehidupan aku, ya?">
-                    <span class="bubble-spark"></span>
-                    Forever Us
+                <div class="wish-bubble" style="--wx:65%;--wy:72%;--dur:4s;" data-msg="Aku enggak akan bosen bilang, kalo aku seneng bertemu kamu. jadi, makasih udah hadir di kehidupan aku, ya?">
+                    <span class="bubble-spark"></span> Forever Us
                 </div>
             </div>
 
-            <!-- Glassmorphic Elegant Wish Popup Modal -->
             <div class="wish-popup" id="wish-popup" aria-live="polite">
                 <div class="wish-popup-inner">
                     <div class="wish-popup-sparkles">✨💖✨</div>
@@ -686,13 +589,12 @@
                 </div>
             </div>
 
-            <div class="final-message">Happy Birthday, My Love ♥</div>
+            <div class="final-message">Happy Birthday, My Girlfie ♥</div>
             <p class="forever-text">Forever & Always Yours</p>
 
             <button id="btn-to-gift" class="btn-primary">
                 <span>Open Your Gift</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
             </button>
@@ -705,38 +607,22 @@
             <h2 class="section-title" id="gift-title">Satu Hal Lagi...</h2>
 
             <div class="gift-scene">
-                <!-- 3D Luxury Gift Box SVG -->
-                <div class="gift-box-wrap" id="gift-box-wrap" role="button" aria-label="Click to open gift"
-                    tabindex="0">
+                <div class="gift-box-wrap" id="gift-box-wrap" role="button" aria-label="Click to open gift" tabindex="0">
                     <div class="gift-tag">For You 🏷️</div>
                     <svg id="gift-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <!-- Box body (Ocean Blue velvet) -->
-                        <rect x="25" y="85" width="150" height="100" rx="8" fill="#cc246c" stroke="#99144d"
-                            stroke-width="1.5" />
-
-                        <!-- Luxurious Gold ribbon vertical -->
+                        <rect x="25" y="85" width="150" height="100" rx="8" fill="#cc246c" stroke="#99144d" stroke-width="1.5" />
                         <rect x="88" y="85" width="24" height="100" fill="#ffd700" opacity="0.9" />
                         <rect x="94" y="85" width="12" height="100" fill="#daa520" opacity="0.7" />
-
-                        <!-- Luxurious Gold ribbon horizontal -->
                         <rect x="25" y="125" width="150" height="22" fill="#ffd700" opacity="0.9" />
                         <rect x="25" y="131" width="150" height="10" fill="#daa520" opacity="0.7" />
-
-                        <!-- Elegant Ribbon Bow -->
                         <path d="M72 83 C55 60, 40 85, 85 85 Z" fill="#ffd700" stroke="#daa520" stroke-width="1" />
                         <path d="M128 83 C145 60, 160 85, 115 85 Z" fill="#ffd700" stroke="#daa520" stroke-width="1" />
-                        <!-- Bow knots -->
                         <ellipse cx="100" cy="85" rx="14" ry="11" fill="#fff" opacity="0.3" />
                         <circle cx="100" cy="85" r="8" fill="#ffd700" />
-
-                        <!-- Lid Group (Flies off on click) -->
                         <g id="gift-lid-group" class="gift-lid-group">
-                            <rect x="18" y="58" width="164" height="28" rx="5" fill="#ff4d94" stroke="#cc246c"
-                                stroke-width="1.5" />
+                            <rect x="18" y="58" width="164" height="28" rx="5" fill="#ff4d94" stroke="#cc246c" stroke-width="1.5" />
                             <rect x="88" y="58" width="24" height="28" fill="#ffd700" opacity="0.9" />
                         </g>
-
-                        <!-- Sparkle stars on box -->
                         <text x="48" y="115" font-size="14" fill="#ffd700" opacity="0.8">✦</text>
                         <text x="145" y="112" font-size="12" fill="#fff" opacity="0.7">✦</text>
                         <text x="52" y="165" font-size="10" fill="#ffd700" opacity="0.8">✦</text>
@@ -744,12 +630,10 @@
                     </svg>
                 </div>
 
-                <!-- Revealed Gift Image -->
                 <div id="gift-reveal" class="gift-reveal">
                     <div class="bouquet-wrapper" id="reward-frame-tilt">
                         <svg class="bouquet-svg" viewBox="0 0 500 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Buket Mawar Asli Cantik & Mewah">
                             <defs>
-                                <!-- Atmospheric Lighting & Ambient Glow -->
                                 <radialGradient id="bloom-glow" cx="50%" cy="45%" r="55%">
                                     <stop offset="0%" stop-color="#fff5f8" stop-opacity="0.9" />
                                     <stop offset="50%" stop-color="#ffd1dc" stop-opacity="0.4" />
@@ -759,8 +643,6 @@
                                     <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6" />
                                     <stop offset="100%" stop-color="#000000" stop-opacity="0" />
                                 </radialGradient>
-
-                                <!-- Premium Wrapping Gradients -->
                                 <linearGradient id="kraft-blush" x1="0" y1="0" x2="1" y2="1">
                                     <stop offset="0%" stop-color="#ffffff" />
                                     <stop offset="35%" stop-color="#ffe8ef" />
@@ -782,8 +664,6 @@
                                     <stop offset="70%" stop-color="#fff2b3" />
                                     <stop offset="100%" stop-color="#aa820a" />
                                 </linearGradient>
-
-                                <!-- Satin Ribbon Gradients -->
                                 <linearGradient id="ribbon-ruby" x1="0" y1="0" x2="1" y2="1">
                                     <stop offset="0%" stop-color="#ff4d79" />
                                     <stop offset="25%" stop-color="#e6194b" />
@@ -795,8 +675,6 @@
                                     <stop offset="50%" stop-color="#ff3366" />
                                     <stop offset="100%" stop-color="#990026" />
                                 </linearGradient>
-
-                                <!-- Realistic Rose Petal Gradients (Deep Velvet Red) -->
                                 <radialGradient id="rose-velvet-core" cx="50%" cy="50%" r="50%">
                                     <stop offset="0%" stop-color="#3b000e" />
                                     <stop offset="45%" stop-color="#7a001e" />
@@ -814,8 +692,6 @@
                                     <stop offset="50%" stop-color="#e6194b" />
                                     <stop offset="100%" stop-color="#990026" />
                                 </linearGradient>
-
-                                <!-- Realistic Pink Garden Rose Gradients (David Austin Style) -->
                                 <radialGradient id="rose-pink-core" cx="50%" cy="45%" r="55%">
                                     <stop offset="0%" stop-color="#a81344" />
                                     <stop offset="40%" stop-color="#e03b6d" />
@@ -833,8 +709,6 @@
                                     <stop offset="50%" stop-color="#ffb8cc" />
                                     <stop offset="100%" stop-color="#e94e77" />
                                 </linearGradient>
-
-                                <!-- Realistic Champagne / Peach Rose Gradients -->
                                 <radialGradient id="rose-peach-core" cx="50%" cy="50%" r="55%">
                                     <stop offset="0%" stop-color="#8a331a" />
                                     <stop offset="45%" stop-color="#c95834" />
@@ -847,8 +721,6 @@
                                     <stop offset="80%" stop-color="#eb7655" />
                                     <stop offset="100%" stop-color="#b83f23" />
                                 </linearGradient>
-
-                                <!-- Realistic Foliage (Eucalyptus & Rose Leaves with Veins) -->
                                 <linearGradient id="eucalyptus-base" x1="0" y1="0" x2="1" y2="1">
                                     <stop offset="0%" stop-color="#b2d0c8" />
                                     <stop offset="50%" stop-color="#699285" />
@@ -863,8 +735,6 @@
                                     <stop offset="0%" stop-color="#aed581" />
                                     <stop offset="100%" stop-color="#33691e" />
                                 </linearGradient>
-
-                                <!-- Drop Shadows & Blur Filters for True Depth -->
                                 <filter id="natural-shadow" x="-20%" y="-20%" width="140%" height="140%">
                                     <feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#2b0512" flood-opacity="0.28" />
                                 </filter>
@@ -877,32 +747,23 @@
                                 </filter>
                             </defs>
 
-                            <!-- Ambient Aura Background Glow -->
                             <ellipse cx="250" cy="240" rx="190" ry="170" fill="url(#bloom-glow)" />
 
-                            <!-- Background Wrapping Sheets (Korean Style Layers) -->
                             <g id="bouquet-wrap-back">
-                                <!-- Outer Kraft/Tulle Paper (Spread Wide) -->
                                 <path d="M70 240 C50 140 140 70 250 65 C360 70 450 140 430 240 L370 470 L130 470 Z" fill="url(#kraft-blush)" />
-                                <!-- Inner Fold Wing Left -->
                                 <path d="M60 250 C40 170 120 110 190 120 L150 430 L90 320 Z" fill="url(#wrap-frosted)" stroke="url(#gold-edge)" stroke-width="1.2" />
-                                <!-- Inner Fold Wing Right -->
                                 <path d="M440 250 C460 170 380 110 310 120 L350 430 L410 320 Z" fill="url(#wrap-frosted)" stroke="url(#gold-edge)" stroke-width="1.2" />
                             </g>
 
-                            <!-- Realism Foliage & Stems (Backdrop Layer) -->
                             <g id="bouquet-foliage-back" filter="url(#natural-shadow)">
-                                <!-- Eucalyptus Sprig Left -->
                                 <g>
                                     <path d="M160 240 Q110 160 80 100" stroke="#48695f" stroke-width="2.5" fill="none" stroke-linecap="round" />
-                                    <!-- Seeded eucalyptus leaves with delicate central stem -->
                                     <ellipse cx="82" cy="104" rx="13" ry="19" transform="rotate(-35 82 104)" fill="url(#eucalyptus-base)" />
                                     <path d="M73 114 L91 94" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
                                     <ellipse cx="105" cy="132" rx="15" ry="21" transform="rotate(-25 105 132)" fill="url(#eucalyptus-base)" />
                                     <path d="M96 143 L114 121" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
                                     <ellipse cx="132" cy="168" rx="16" ry="23" transform="rotate(-15 132 168)" fill="url(#eucalyptus-base)" />
                                 </g>
-                                <!-- Eucalyptus Sprig Right -->
                                 <g>
                                     <path d="M340 240 Q390 160 420 100" stroke="#48695f" stroke-width="2.5" fill="none" stroke-linecap="round" />
                                     <ellipse cx="418" cy="104" rx="13" ry="19" transform="rotate(35 418 104)" fill="url(#eucalyptus-base)" />
@@ -911,28 +772,20 @@
                                     <path d="M404 143 L386 121" stroke="#ffffff" stroke-width="0.8" opacity="0.5" />
                                     <ellipse cx="368" cy="168" rx="16" ry="23" transform="rotate(15 368 168)" fill="url(#eucalyptus-base)" />
                                 </g>
-                                <!-- Serrated Deep Green Rose Leaves Top Center -->
                                 <g>
-                                    <!-- Top Left Leaf -->
                                     <path d="M230 140 C210 90 180 60 160 40 C190 60 215 95 235 140 Z" fill="url(#leaf-rose-deep)" />
                                     <path d="M195 90 Q175 50 160 40 Q185 70 215 105" stroke="#7cb342" stroke-width="1" fill="none" opacity="0.6" />
-                                    <!-- Top Right Leaf -->
                                     <path d="M270 140 C290 90 320 60 340 40 C310 60 285 95 265 140 Z" fill="url(#leaf-rose-deep)" />
                                     <path d="M305 90 Q325 50 340 40 Q315 70 285 105" stroke="#7cb342" stroke-width="1" fill="none" opacity="0.6" />
-                                    <!-- Center Peak Leaf -->
                                     <path d="M245 130 C240 70 248 30 250 15 C252 30 260 70 255 130 Z" fill="url(#leaf-highlight)" />
                                     <line x1="250" y1="130" x2="250" y2="20" stroke="#dcedc8" stroke-width="1" opacity="0.7" />
                                 </g>
                             </g>
 
-                            <!-- Gypsophila (Realistic Baby's Breath Clouds) -->
                             <g id="babys-breath-sprigs" filter="url(#petal-cast-shadow)">
-                                <!-- Tiny multi-branch Stems -->
                                 <path d="M160 170 Q130 130 110 95 M135 140 Q115 125 100 120 M145 155 Q160 120 170 95" stroke="#7da172" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.7" />
                                 <path d="M340 170 Q370 130 390 95 M365 140 Q385 125 400 120 M355 155 Q340 120 330 95" stroke="#7da172" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.7" />
                                 <path d="M220 100 Q205 65 195 45 M280 100 Q295 65 305 45" stroke="#7da172" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.7" />
-
-                                <!-- Delicate Blooming White Florets with Calyx Details -->
                                 <g fill="#ffffff">
                                     <circle cx="110" cy="95" r="4.5" />
                                     <circle cx="100" cy="120" r="4" />
@@ -948,13 +801,11 @@
                                     <circle cx="305" cy="45" r="4" />
                                     <circle cx="215" cy="65" r="3.5" />
                                     <circle cx="285" cy="65" r="3.5" />
-                                    <!-- Florets around periphery -->
                                     <circle cx="95" cy="210" r="4.5" />
                                     <circle cx="85" cy="235" r="4" />
                                     <circle cx="405" cy="210" r="4.5" />
                                     <circle cx="415" cy="235" r="4" />
                                 </g>
-                                <!-- Pistil/Golden centers of baby's breath -->
                                 <g fill="#ffd54f">
                                     <circle cx="110" cy="95" r="1.5" />
                                     <circle cx="100" cy="120" r="1.3" />
@@ -967,104 +818,59 @@
                                 </g>
                             </g>
 
-                            <!-- Realistic Blooming Flowers Layer (Depth-Sorted) -->
                             <g id="realistic-flowers" filter="url(#natural-shadow)">
-
-                                <!-- ═══════════════════════════════════════════════════
-                                     FLOWER 1: TOP CHAMPAGNE PEACH ROSE (Soft & Romantic)
-                                     ═══════════════════════════════════════════════════ -->
                                 <g id="champagne-rose-top" transform="translate(250, 125)">
-                                    <!-- Base Shadow -->
                                     <circle cx="0" cy="0" r="44" fill="#c45c3d" opacity="0.3" filter="url(#natural-shadow)" />
-                                    <!-- Outer Guard Petals -->
                                     <path d="M-42 5 C-48 -25 -15 -42 0 -42 C15 -42 48 -25 42 5 C38 28 15 42 0 42 C-15 42 -38 28 -42 5 Z" fill="url(#petal-peach-outer)" />
                                     <path d="M-36 -10 C-46 15 -18 36 0 35 C18 36 46 15 36 -10 C28 -30 -28 -30 -36 -10 Z" fill="#ffe2d1" />
-                                    
-                                    <!-- Mid Flared Petals Layer 1 -->
                                     <path d="M-32 0 C-38 -18 -10 -32 5 -30 C22 -28 35 -12 32 6 C28 22 8 30 -6 28 C-22 25 -30 15 -32 0 Z" fill="#ffcca8" />
                                     <path d="M-26 -15 C-12 -34 18 -32 28 -14 C36 4 18 24 2 24 C-15 24 -32 5 -26 -15 Z" fill="#fff5ee" />
                                     <path d="M-22 10 C-30 -5 -15 -22 0 -22 C18 -22 30 -5 22 10 C14 24 -14 24 -22 10 Z" fill="#f89e7c" />
-                                    
-                                    <!-- Realistic Spiral Petal Folds (Overlapping Cups) -->
                                     <path d="M-18 -8 C-12 -22 14 -20 18 -6 C22 8 8 18 -4 16 C-14 14 -20 4 -18 -8 Z" fill="#f27d59" />
                                     <path d="M-14 -4 C-8 -15 10 -14 14 -3 C16 7 5 13 -2 12 C-9 11 -14 4 -14 -4 Z" fill="#fff0e6" />
                                     <path d="M-10 -2 C-5 -10 7 -9 9 -1 C11 6 3 9 -1 9 C-6 8 -10 4 -10 -2 Z" fill="url(#rose-peach-core)" />
-                                    <!-- Rose Heart Swirl -->
                                     <path d="M-5 0 C-3 -6 4 -5 5 0 C6 4 0 5 -2 4 C-4 3 -5 1 -5 0" fill="#6e220f" stroke="#ffa385" stroke-width="1" />
                                     <circle cx="0" cy="0" r="2.5" fill="#521506" />
                                 </g>
 
-                                <!-- ═══════════════════════════════════════════════════
-                                     FLOWER 2: LEFT VELVET RUBY RED ROSE (Deep Luxurious)
-                                     ═══════════════════════════════════════════════════ -->
                                 <g id="ruby-rose-left" transform="translate(165, 205)">
-                                    <!-- Base Calyx Shadow -->
                                     <circle cx="0" cy="0" r="54" fill="#38000d" opacity="0.35" />
-                                    
-                                    <!-- Outermost Velvety Back Petals -->
                                     <path d="M-48 10 C-56 -20 -20 -50 0 -50 C20 -50 56 -20 48 10 C42 38 18 52 0 52 C-18 52 -42 38 -48 10 Z" fill="url(#petal-red-outer)" />
-                                    <!-- Petal Curled Edges (Realistic Highlights) -->
                                     <path d="M-45 -5 C-52 20 -20 45 0 44 C20 45 52 20 45 -5 C35 -30 -35 -30 -45 -5 Z" fill="#990026" />
                                     <path d="M-38 -15 C-48 8 -22 36 0 35 C22 36 48 8 38 -15 C28 -38 -28 -38 -38 -15 Z" fill="url(#petal-red-rim)" />
-                                    
-                                    <!-- Layer 2 Cups -->
                                     <path d="M-34 5 C-42 -14 -12 -34 6 -32 C25 -30 38 -10 34 10 C29 28 6 36 -8 34 C-24 30 -32 20 -34 5 Z" fill="#800020" />
                                     <path d="M-28 -10 C-14 -28 18 -26 28 -8 C35 8 16 26 0 25 C-16 25 -34 6 -28 -10 Z" fill="#d61543" />
-                                    
-                                    <!-- Layer 3 Interior Wrap Petals -->
                                     <path d="M-24 4 C-30 -10 -8 -24 5 -22 C18 -20 26 -6 22 8 C18 20 4 24 -6 22 C-16 20 -22 14 -24 4 Z" fill="url(#rose-velvet-core)" />
                                     <path d="M-18 -5 C-8 -18 12 -16 18 -3 C22 9 8 18 -2 17 C-11 16 -18 7 -18 -5 Z" fill="#ff4d73" />
-                                    
-                                    <!-- Rose Deep Velvet Core -->
                                     <path d="M-12 0 C-6 -10 8 -9 11 0 C13 7 4 12 -2 11 C-8 10 -12 6 -12 0 Z" fill="#540015" />
                                     <path d="M-7 -1 C-4 -6 5 -5 6 0 C7 4 1 6 -1 5 C-4 4 -7 2 -7 -1" fill="#30000c" stroke="#ff809b" stroke-width="1.2" />
                                     <circle cx="0" cy="0" r="3" fill="#1f0007" />
                                 </g>
 
-                                <!-- ═══════════════════════════════════════════════════
-                                     FLOWER 3: RIGHT BLUSH AUSTIN ROSE (English Garden Style)
-                                     ═══════════════════════════════════════════════════ -->
                                 <g id="blush-rose-right" transform="translate(335, 205)">
-                                    <!-- Base Shadow -->
                                     <circle cx="0" cy="0" r="54" fill="#52051d" opacity="0.35" />
-                                    
-                                    <!-- Outermost Broad Petals -->
                                     <path d="M-48 10 C-56 -20 -20 -50 0 -50 C20 -50 56 -20 48 10 C42 38 18 52 0 52 C-18 52 -42 38 -48 10 Z" fill="url(#petal-soft-pink)" />
                                     <path d="M-44 -6 C-50 18 -18 44 0 43 C18 44 50 18 44 -6 C34 -32 -34 -32 -44 -6 Z" fill="#ff94b8" />
                                     <path d="M-38 -15 C-48 8 -22 36 0 35 C22 36 48 8 38 -15 C28 -38 -28 -38 -38 -15 Z" fill="url(#petal-pink-mid)" />
-                                    
-                                    <!-- Layer 2 Soft Swirls -->
                                     <path d="M-34 5 C-42 -14 -12 -34 6 -32 C25 -30 38 -10 34 10 C29 28 6 36 -8 34 C-24 30 -32 20 -34 5 Z" fill="#e04878" />
                                     <path d="M-28 -10 C-14 -28 18 -26 28 -8 C35 8 16 26 0 25 C-16 25 -34 6 -28 -10 Z" fill="#ffffff" opacity="0.9" />
-                                    
-                                    <!-- Layer 3 Nested Center Petals -->
                                     <path d="M-24 4 C-30 -10 -8 -24 5 -22 C18 -20 26 -6 22 8 C18 20 4 24 -6 22 C-16 20 -22 14 -24 4 Z" fill="url(#rose-pink-core)" />
                                     <path d="M-18 -5 C-8 -18 12 -16 18 -3 C22 9 8 18 -2 17 C-11 16 -18 7 -18 -5 Z" fill="#ffaec7" />
-                                    
-                                    <!-- Dense Button Center (David Austin Rose Characteristic) -->
                                     <path d="M-12 0 C-6 -10 8 -9 11 0 C13 7 4 12 -2 11 C-8 10 -12 6 -12 0 Z" fill="#990f3d" />
                                     <path d="M-7 -1 C-4 -6 5 -5 6 0 C7 4 1 6 -1 5 C-4 4 -7 2 -7 -1" fill="#610423" stroke="#ffd1e0" stroke-width="1.2" />
                                     <circle cx="0" cy="0" r="3" fill="#3d0014" />
                                 </g>
 
-                                <!-- ═══════════════════════════════════════════════════
-                                     FLOWER 4: BOTTOM LEFT FULL PEONY / HYDRANGEA CLUSTER
-                                     ═══════════════════════════════════════════════════ -->
                                 <g id="peony-bottom-left" transform="translate(145, 290)">
                                     <ellipse cx="0" cy="0" rx="42" ry="36" fill="#f8bbd0" opacity="0.9" />
-                                    <!-- Ruffled Dense Peony Petals Layered with Highlights -->
                                     <path d="M-32 -10 C-38 12 -15 32 0 32 C18 32 36 12 32 -10 C25 -26 -22 -26 -32 -10 Z" fill="#f06292" />
                                     <path d="M-25 -18 C-35 2 -14 24 2 24 C18 24 35 2 25 -18 C14 -32 -14 -32 -25 -18 Z" fill="#ff80ab" />
                                     <path d="M-18 -8 C-25 8 -8 18 0 18 C8 18 25 8 18 -8 C10 -20 -10 -20 -18 -8 Z" fill="#ffffff" opacity="0.85" />
                                     <path d="M-10 -4 C-14 4 -4 10 0 10 C4 10 14 4 10 -4 C6 -10 -6 -10 -10 -4 Z" fill="#ec407a" />
-                                    <!-- Pistils & Golden Pollen Center -->
                                     <circle cx="0" cy="0" r="4" fill="#ffd54f" />
                                     <circle cx="-3" cy="-2" r="1.5" fill="#fff" />
                                 </g>
 
-                                <!-- ═══════════════════════════════════════════════════
-                                     FLOWER 5: BOTTOM RIGHT CORAL PEONY CLUSTER
-                                     ═══════════════════════════════════════════════════ -->
                                 <g id="peony-bottom-right" transform="translate(355, 290)">
                                     <ellipse cx="0" cy="0" rx="42" ry="36" fill="#ffccbc" opacity="0.9" />
                                     <path d="M-32 -10 C-38 12 -15 32 0 32 C18 32 36 12 32 -10 C25 -26 -22 -26 -32 -10 Z" fill="#ff8a65" />
@@ -1075,38 +881,23 @@
                                     <circle cx="3" cy="-2" r="1.5" fill="#fff" />
                                 </g>
 
-                                <!-- ═══════════════════════════════════════════════════
-                                     FLOWER 6: THE CENTERPIECE QUEEN ROSE (Grand Royal Rose)
-                                     ═══════════════════════════════════════════════════ -->
                                 <g id="grand-queen-rose" transform="translate(250, 245)">
-                                    <!-- Big Ambient Bloom Shadow -->
                                     <circle cx="0" cy="0" r="62" fill="#4d0017" opacity="0.4" filter="url(#natural-shadow)" />
-
-                                    <!-- Tier 1: Outermost Spreading Petals with Scalloped Rims -->
                                     <path d="M-55 8 C-65 -25 -24 -60 0 -60 C24 -60 65 -25 55 8 C48 44 20 62 0 62 C-20 62 -48 44 -55 8 Z" fill="url(#petal-soft-pink)" />
                                     <path d="M-50 -10 C-60 18 -22 52 0 50 C22 52 60 18 50 -10 C38 -40 -38 -40 -50 -10 Z" fill="#ff6699" />
                                     <path d="M-44 -20 C-56 6 -24 42 0 40 C24 42 56 6 44 -20 C32 -46 -32 -46 -44 -20 Z" fill="url(#petal-pink-mid)" />
-
-                                    <!-- Tier 2: Mid Symmetrical Cupped Petals -->
                                     <path d="M-38 6 C-46 -15 -14 -38 8 -36 C28 -34 44 -12 38 12 C32 32 8 40 -8 38 C-28 34 -36 22 -38 6 Z" fill="#d81b60" />
                                     <path d="M-32 -12 C-16 -32 20 -30 32 -10 C40 10 18 30 0 28 C-18 28 -38 8 -32 -12 Z" fill="#ffffff" opacity="0.95" />
-                                    
-                                    <!-- Tier 3: Inner Velvet Bowl Petals -->
                                     <path d="M-28 4 C-34 -12 -10 -28 6 -26 C22 -24 30 -8 26 8 C20 22 4 28 -8 26 C-20 24 -26 16 -28 4 Z" fill="url(#rose-pink-core)" />
                                     <path d="M-22 -6 C-10 -22 14 -20 22 -4 C26 10 10 20 -2 19 C-14 18 -22 8 -22 -6 Z" fill="#ff99bb" />
-
-                                    <!-- Tier 4: Dense Heart Petal Whorls (Center Swirl of Rose) -->
                                     <path d="M-15 0 C-8 -14 10 -13 14 0 C17 10 5 15 -3 14 C-11 13 -15 7 -15 0 Z" fill="#ad1457" />
                                     <path d="M-10 -3 C-5 -10 6 -9 9 -2 C11 5 3 9 -1 8 C-6 7 -10 3 -10 -3 Z" fill="#ffffff" opacity="0.9" />
                                     <path d="M-6 -1 C-3 -6 4 -5 5 0 C6 4 1 5 -1 4 C-3 3 -6 2 -6 -1" fill="#4a001a" stroke="#ffb3cc" stroke-width="1.4" />
                                     <circle cx="0" cy="0" r="3.2" fill="#2d0010" />
                                 </g>
 
-                                <!-- Front Mini Accent Flowers (Natural Wild Daisies & Dew Drops) -->
                                 <g id="front-accents">
-                                    <!-- Daisy Accent 1 (Left Valley) -->
                                     <g transform="translate(195, 175) scale(0.6)" filter="url(#petal-cast-shadow)">
-                                        <!-- Realistic Petals with central vein -->
                                         <g fill="#ffffff" stroke="#fce4ec" stroke-width="0.5">
                                             <ellipse cx="-16" cy="0" rx="9" ry="4" transform="rotate(0 -16 0)" />
                                             <ellipse cx="16" cy="0" rx="9" ry="4" transform="rotate(0 16 0)" />
@@ -1120,8 +911,6 @@
                                         <circle cx="0" cy="0" r="7.5" fill="#fbc02d" stroke="#f57f17" stroke-width="1" />
                                         <circle cx="-2" cy="-2" r="2.5" fill="#fff9c4" />
                                     </g>
-
-                                    <!-- Daisy Accent 2 (Right Valley) -->
                                     <g transform="translate(305, 175) scale(0.6)" filter="url(#petal-cast-shadow)">
                                         <g fill="#ffffff" stroke="#fce4ec" stroke-width="0.5">
                                             <ellipse cx="-16" cy="0" rx="9" ry="4" transform="rotate(0 -16 0)" />
@@ -1136,82 +925,87 @@
                                         <circle cx="0" cy="0" r="7.5" fill="#fbc02d" stroke="#f57f17" stroke-width="1" />
                                         <circle cx="-2" cy="-2" r="2.5" fill="#fff9c4" />
                                     </g>
-
-                                    <!-- Pearl / Crystal Dewdrops on Queen Rose -->
                                     <circle cx="270" cy="230" r="3" fill="#ffffff" opacity="0.8" />
                                     <circle cx="271" cy="229" r="1" fill="#ffffff" />
                                     <circle cx="150" cy="190" r="2.5" fill="#ffffff" opacity="0.75" />
                                 </g>
                             </g>
 
-                            <!-- Bouquet Front Cone Wrapping (Realistic Paper Folds & Korean Style Sheer Film) -->
                             <g id="bouquet-wrap-front" filter="url(#natural-shadow)">
-                                <!-- Inner Fold Cone Shadow Layer -->
                                 <path d="M120 310 Q205 340 250 370 L175 540 Q130 460 120 310 Z" fill="url(#wrap-inner-shadow)" opacity="0.7" />
                                 <path d="M380 310 Q295 340 250 370 L325 540 Q370 460 380 310 Z" fill="url(#wrap-inner-shadow)" opacity="0.7" />
-
-                                <!-- Main Diagonal Wrapper Left Wing -->
                                 <path d="M110 320 C165 375 235 395 285 415 L215 545 C190 515 155 435 110 320 Z" fill="url(#kraft-blush)" stroke="#f8bbd0" stroke-width="1.5" />
-                                <!-- Gold Trim Accent on Left Flap -->
                                 <path d="M110 320 C165 375 235 395 285 415" stroke="url(#gold-edge)" stroke-width="2.5" fill="none" stroke-linecap="round" />
-
-                                <!-- Main Diagonal Wrapper Right Wing (Overlapping Front) -->
                                 <path d="M390 320 C335 375 265 395 215 415 L285 545 C310 515 345 435 390 320 Z" fill="url(#wrap-frosted)" stroke="#f8bbd0" stroke-width="1.5" />
-                                <!-- Gold Trim Accent on Right Flap -->
                                 <path d="M390 320 C335 375 265 395 215 415" stroke="url(#gold-edge)" stroke-width="2.5" fill="none" stroke-linecap="round" />
-
-                                <!-- Bottom Gather Stem Cone (Bound base) -->
                                 <path d="M205 475 L215 550 C230 558 270 558 285 550 L295 475 Z" fill="#e598b0" />
                             </g>
 
-                            <!-- Big Elegant Silk Satin Ribbon & Bow -->
                             <g id="silk-ribbon" filter="url(#natural-shadow)" transform="translate(250, 455)">
-                                <!-- Long Draped Ribbon Tails (Wavy Silk Cascades) -->
                                 <path d="M-15 15 C-35 70 -65 105 -95 155 C-80 160 -45 120 -5 45 Z" fill="url(#ribbon-ruby)" />
                                 <path d="M15 15 C35 70 65 105 95 155 C80 160 45 120 5 45 Z" fill="url(#ribbon-ruby)" />
-                                <!-- Silk Sheen Highlights on Tails -->
                                 <path d="M-12 25 C-28 75 -52 105 -78 150" stroke="#ff99b3" stroke-width="2.5" fill="none" opacity="0.75" stroke-linecap="round" />
                                 <path d="M12 25 C28 75 52 105 78 150" stroke="#ff99b3" stroke-width="2.5" fill="none" opacity="0.75" stroke-linecap="round" />
-
-                                <!-- Left Lush Bow Loop -->
                                 <path d="M0 0 C-40 -45 -95 -35 -90 8 C-85 42 -35 30 0 6 Z" fill="url(#ribbon-ruby)" />
                                 <path d="M-6 -2 C-35 -35 -78 -26 -72 6 C-66 28 -28 22 -6 4 Z" fill="url(#ribbon-highlight)" />
-
-                                <!-- Right Lush Bow Loop -->
                                 <path d="M0 0 C40 -45 95 -35 90 8 C85 42 35 30 0 6 Z" fill="url(#ribbon-ruby)" />
                                 <path d="M6 -2 C35 -35 78 -26 72 6 C66 28 28 22 6 4 Z" fill="url(#ribbon-highlight)" />
-
-                                <!-- Center Silk Knot -->
                                 <ellipse cx="0" cy="3" rx="16" ry="14" fill="url(#ribbon-ruby)" stroke="#ff80a0" stroke-width="1.5" />
-                                <!-- Jewel/Pearl Centerpiece on Bow Knot -->
                                 <circle cx="0" cy="3" r="6" fill="#ffd700" stroke="#ffffff" stroke-width="1.2" />
                                 <circle cx="-2" cy="1" r="2" fill="#ffffff" />
                             </g>
 
-                            <!-- Dreamy Sparkles & Floating Particles -->
                             <g id="sparkle-particles" fill="#ffd700" filter="url(#soft-shimmer)">
-                                <!-- Magical 4-point Sparkles -->
                                 <path d="M85 190 Q85 200 75 200 Q85 200 85 210 Q85 200 95 200 Q85 200 85 190 Z" />
                                 <circle cx="105" cy="160" r="3.5" fill="#ffffff" />
                                 <circle cx="70" cy="240" r="2.5" />
-
                                 <path d="M415 190 Q415 200 405 200 Q415 200 415 210 Q415 200 425 200 Q415 200 415 190 Z" />
                                 <circle cx="395" cy="160" r="3.5" fill="#ffffff" />
                                 <circle cx="430" cy="240" r="2.5" />
-
                                 <path d="M250 25 Q250 37 238 37 Q250 37 250 49 Q250 37 262 37 Q250 37 250 25 Z" />
                                 <circle cx="210" cy="40" r="3" fill="#ffffff" />
                                 <circle cx="290" cy="40" r="3" fill="#ffffff" />
-
-                                <!-- Soft Floating Hearts -->
                                 <path d="M120 135 C115 130 105 130 105 137 C105 145 120 155 120 155 C120 155 135 145 135 137 C135 130 125 130 120 135 Z" fill="#ff4d79" opacity="0.85" />
                                 <path d="M380 135 C375 130 365 130 365 137 C365 145 380 155 380 155 C380 155 395 145 395 137 C395 130 385 130 380 135 Z" fill="#ff4d79" opacity="0.85" />
                             </g>
                         </svg>
                     </div>
-                    <p class="gift-msg-sign">— With all my love &amp; sincerity ♥</p>
-                </div>
-</a>
+                    <!-- KERTAS NOTE HARAPAN (FINAL WISH) -->
+                    <style>
+                        .final-wish-note {
+                            background: #fff9fa;
+                            border-radius: 4px 4px 15px 15px;
+                            padding: 25px 20px 20px 20px;
+                            margin: 15px auto 0;
+                            width: 90%;
+                            max-width: 320px;
+                            box-shadow: 0 10px 25px rgba(255, 77, 136, 0.2);
+                            position: relative;
+                            border-top: 12px solid #ff4d88;
+                            /* Membuat garis-garis buku diary */
+                            background-image: repeating-linear-gradient(transparent, transparent 27px, #ffd1e6 28px);
+                            background-attachment: local;
+                            background-position: 0 2px;
+                        }
+                        .final-wish-note::before {
+                            content: '📌';
+                            position: absolute;
+                            top: -18px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            font-size: 26px;
+                            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
+                        }
+                        .note-text {
+                            font-family: 'Caveat', cursive;
+                            font-size: 22px;
+                            color: #351522;
+                            line-height: 28px;
+                            text-align: left;
+                            margin: 0;
+                            letter-spacing: 0.5px;
+                        }
+                    </style>
                 </div>
             </div>
         </section>
@@ -1240,23 +1034,20 @@
     <!-- Scripts -->
     <script src="js/index.js?v=3.0"></script>
     <script>
-    let noScale = 1;
-    function growNoButton() {
-        noScale += 0.5; // Menambah ukuran tombol No setiap kali diklik
-        const btnNo = document.getElementById('btn-no');
-        btnNo.style.transform = `scale(${noScale})`;
-        
-        // Memunculkan alert lucu secara acak
-        const pesanLucu = [
-            "Serius pilih No?? 😭", 
-            "Kok gitu sih sayang? 🥺", 
-            "Pencet Yes dong! 😡", 
-            "Makin dipencet No-nya makin gede loh! 😤"
-        ];
-        const pesanAcak = pesanLucu[Math.floor(Math.random() * pesanLucu.length)];
-        alert(pesanAcak);
-    }
-</script>
+        let noScale = 1;
+        function growNoButton() {
+            noScale += 0.5;
+            const btnNo = document.getElementById('btn-no');
+            btnNo.style.transform = `scale(${noScale})`;
+            const pesanLucu = [
+                "Serius pilih No?? 😭", 
+                "Kok gitu sih sayang? 🥺", 
+                "Pencet Yes dong! 😭", 
+                "Makin dipencet No-nya makin gede loh!"
+            ];
+            const pesanAcak = pesanLucu[Math.floor(Math.random() * pesanLucu.length)];
+            alert(pesanAcak);
+        }
+    </script>
 </body>
-
 </html>
