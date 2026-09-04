@@ -277,15 +277,15 @@ document.addEventListener('DOMContentLoaded', () => {
         polaroidsLoaded = true;
 
         const media = [
-            { type: 'image', src: 'assets/img1.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/img2.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/img3.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/img4.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/img5.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/img6.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/img7.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/img8.jpeg', label: '🩷' },
-            { type: 'image', src: 'assets/img9.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/Img1.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/Img2.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/Img3.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/Img4.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/Img5.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/Img6.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/Img7.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/Img8.jpeg', label: '🩷' },
+            { type: 'image', src: 'assets/Img9.jpeg', label: '🩷' },
         ];
 
         media.forEach((item, idx) => {
