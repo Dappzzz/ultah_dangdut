@@ -569,7 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
         triggerBurst(clientX, clientY, 55, 'star');
 
         setTimeout(() => {
-            cakeTitle.textContent = 'Yummy! Buat permohonan...';
+            cakeTitle.textContent = 'HORREYYY! Buat permohonan...';
             cakeSub.textContent = 'Good job! ✨';
             btnCakeNext.classList.remove('btn--hidden');
             btnCakeNext.classList.add('btn--visible');

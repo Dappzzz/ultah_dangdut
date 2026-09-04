@@ -19,19 +19,242 @@
 </head>
 
 <body>
+<!-- KUIS & SPOTIFY OVERLAY FINAL -->
+<div id="quiz-overlay" style="position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at 50% 50%, #fff5f8 0%, #ffe6f0 60%, #ffd1e6 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Quicksand', sans-serif; overflow-y: auto; overflow-x: hidden;">
+    
+<!-- KUIS, MINIGAME & SPOTIFY OVERLAY FINAL -->
+<div id="quiz-overlay" style="position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at 50% 50%, #fff5f8 0%, #ffe6f0 60%, #ffd1e6 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Quicksand', sans-serif; overflow-y: auto; overflow-x: hidden;">
+    
+    <!-- CSS Animasi Transisi & Balasan -->
+    <style>
+        @keyframes shrinkUpOut { 0% { opacity: 1; transform: scale(1) translateY(0); } 100% { opacity: 0; transform: scale(0.8) translateY(-50px); display: none; } }
+        @keyframes fadeInScale { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes popIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+        .pesan-benar { display: none; color: #ff4d88; font-size: 15px; font-weight: bold; margin-top: 25px; animation: popIn 0.4s ease forwards; background: rgba(255, 255, 255, 0.9); padding: 12px 20px; border-radius: 20px; border: 2px dashed #ff4d88; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.15); }
+    </style>
+
+    <!-- ============================================== -->
+    <!-- TAHAP 1: PIN LOKER RAHASIA -->
+    <!-- ============================================== -->
+    <div id="quiz-0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; height: 100%; min-height: 100vh;">
+        <style>
+            .numpad-btn { width: 65px; height: 65px; border-radius: 50%; font-size: 24px; font-weight: bold; background: rgba(255, 255, 255, 0.9); border: 2px solid #ff4d88; color: #ff4d88; display: flex; justify-content: center; align-items: center; margin: 0 auto; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.15); cursor: pointer; transition: 0.1s; user-select: none; }
+            .numpad-btn:active { background: #ff4d88; color: white; transform: scale(0.95); }
+            .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #ff4d88; background: transparent; transition: 0.2s; box-sizing: border-box; margin: 0; padding: 0; }
+        </style>
+
+        <h2 style="color: #ff4d88; font-size: 26px; margin-top: 0; margin-bottom: 5px; font-family: 'Playfair Display', serif;">Masukkan PIN Rahasia 🔒</h2>
+        <p style="color: #e62e70; font-size: 13px; font-weight: bold; margin-bottom: 30px;">(Clue: Tanggal, Bulan, dan Tahun Lahir!)</p>
+        
+        <div id="pin-dots" style="display: flex; gap: 12px; margin-bottom: 40px; align-items: center; justify-content: center; height: 20px;">
+            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 250px;">
+            <div class="numpad-btn" onclick="addPin(1)">1</div><div class="numpad-btn" onclick="addPin(2)">2</div><div class="numpad-btn" onclick="addPin(3)">3</div>
+            <div class="numpad-btn" onclick="addPin(4)">4</div><div class="numpad-btn" onclick="addPin(5)">5</div><div class="numpad-btn" onclick="addPin(6)">6</div>
+            <div class="numpad-btn" onclick="addPin(7)">7</div><div class="numpad-btn" onclick="addPin(8)">8</div><div class="numpad-btn" onclick="addPin(9)">9</div>
+            <div></div><div class="numpad-btn" onclick="addPin(0)">0</div><div class="numpad-btn" onclick="deletePin()" style="font-size: 24px; border: none; background: transparent; box-shadow: none; color: #ff4d88;">⌫</div>
+        </div>
+
+        <script>
+            let currentPin = ''; const correctPin = '040906';
+            function updateDots() { document.querySelectorAll('#pin-dots .pin-dot').forEach((dot, index) => { dot.style.background = (index < currentPin.length) ? '#ff4d88' : 'transparent'; }); }
+            function addPin(num) { if (currentPin.length < 6) { currentPin += num; updateDots(); if (currentPin.length === 6) setTimeout(() => checkPin(), 300); } }
+            function deletePin() { if (currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updateDots(); } }
+            function checkPin() {
+                if (currentPin === correctPin) {
+                    let audio = document.getElementById('bg-music'); if (audio) audio.play();
+                    let iconPlay = document.getElementById('icon-play'); let iconPause = document.getElementById('icon-pause');
+                    if (iconPlay && iconPause) { iconPlay.style.display = 'none'; iconPause.style.display = 'block'; }
+                    document.getElementById('quiz-0').style.display = 'none'; document.getElementById('quiz-minigame').style.display = 'flex';
+                } else { alert('Yahh PIN salah! Coba ingat-ingat lagi 😋'); currentPin = ''; updateDots(); }
+            }
+            currentPin = ''; updateDots();
+        </script>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAHAP 2: MINIGAME TIC-TAC-TOE -->
+    <!-- ============================================== -->
+    <div id="quiz-minigame" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+        <style>
+            .ttt-cell { width: 80px; height: 80px; background: rgba(255, 255, 255, 0.9); border: 3px solid #ff4d88; border-radius: 15px; font-size: 40px; font-weight: bold; color: #ff4d88; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.15); transition: 0.2s; user-select: none; }
+            .ttt-cell:active { transform: scale(0.95); } .ttt-cell.taken { cursor: default; }
+        </style>
+        <h2 style="color: #ff4d88; font-size: 28px; margin-top: 0; margin-bottom: 5px; font-family: 'Playfair Display', serif;">Tic-Tac-Toe 🎮</h2>
+        <p style="color: #e62e70; font-size: 15px; font-weight: bold; margin-bottom: 30px;">Coba kalahin akuhh! 😝<br><span style="font-size: 13px; font-weight: normal;">(Kamu X, Risyad O)</span></p>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px;">
+            <div class="ttt-cell" onclick="playerMove(0)" id="cell-0"></div><div class="ttt-cell" onclick="playerMove(1)" id="cell-1"></div><div class="ttt-cell" onclick="playerMove(2)" id="cell-2"></div>
+            <div class="ttt-cell" onclick="playerMove(3)" id="cell-3"></div><div class="ttt-cell" onclick="playerMove(4)" id="cell-4"></div><div class="ttt-cell" onclick="playerMove(5)" id="cell-5"></div>
+            <div class="ttt-cell" onclick="playerMove(6)" id="cell-6"></div><div class="ttt-cell" onclick="playerMove(7)" id="cell-7"></div><div class="ttt-cell" onclick="playerMove(8)" id="cell-8"></div>
+        </div>
+        <div id="ttt-message" style="color: #ff4d88; font-size: 16px; font-weight: bold; height: 20px; margin-bottom: 25px;"></div>
+
+        <script>
+            let board = ['', '', '', '', '', '', '', '', '']; let gameActive = true;
+            const winConditions = [ [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6] ];
+            function checkWin(player) { return winConditions.some(cond => cond.every(idx => board[idx] === player)); }
+            function checkDraw() { return board.every(cell => cell !== ''); }
+            
+            function endGame(message) {
+                gameActive = false; document.getElementById('ttt-message').innerText = message;
+                setTimeout(() => {
+                    let minigame = document.getElementById('quiz-minigame'); minigame.style.animation = 'shrinkUpOut 0.8s forwards';
+                    setTimeout(() => {
+                        minigame.style.display = 'none'; let transitionScreen = document.getElementById('quiz-transition'); transitionScreen.style.display = 'flex';
+                        setTimeout(() => {
+                            transitionScreen.style.animation = 'shrinkUpOut 0.8s forwards';
+                            setTimeout(() => { transitionScreen.style.display = 'none'; let quiz1 = document.getElementById('quiz-1'); quiz1.style.display = 'flex'; quiz1.style.animation = 'fadeInScale 0.8s forwards'; }, 700);
+                        }, 2500);
+                    }, 700);
+                }, 2000);
+            }
+
+            function playerMove(index) {
+                if (board[index] === '' && gameActive) {
+                    board[index] = 'X'; let cell = document.getElementById('cell-' + index); cell.innerText = 'X'; cell.classList.add('taken');
+                    if (checkWin('X')) return endGame('Yayy kamu menang! Hebat sayangkuh 👏');
+                    if (checkDraw()) return endGame('Yah seri! Sama-sama jago nih kita 😂');
+                    setTimeout(aiMove, 400);
+                }
+            }
+            function aiMove() {
+                if (!gameActive) return;
+                let empty = []; board.forEach((val, idx) => { if (val === '') empty.push(idx); });
+                if (empty.length > 0) {
+                    let rand = empty[Math.floor(Math.random() * empty.length)];
+                    board[rand] = 'O'; let cell = document.getElementById('cell-' + rand); cell.innerText = 'O'; cell.style.color = '#e62e70'; cell.classList.add('taken');
+                    if (checkWin('O')) return endGame('Wlee Risyad menang! 😝 Jangan ngambek yaa');
+                    if (checkDraw()) return endGame('Yah seri! Sama-sama jago nih kita 😂');
+                }
+            }
+        </script>
+    </div>
+
+    <!-- TAHAP 2.5: LAYAR TRANSISI -->
+    <div id="quiz-transition" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh; animation: fadeInScale 0.8s forwards;">
+        <h2 style="color: #ff4d88; font-size: 32px; margin-top: 0; margin-bottom: 15px; font-family: 'Playfair Display', serif;">Pemanasan Selesai! ✨</h2>
+        <p style="color: #e62e70; font-size: 16px; font-weight: bold; background: rgba(255, 255, 255, 0.9); padding: 15px 25px; border-radius: 20px; border: 2px dashed #ff4d88; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.2); line-height: 1.6;">Sekarang kita masuk ke sesi kuis ya sayangkuh...<br>Siap-siap! 📝💕</p>
+    </div>
+
+    <!-- KUIS 1 -->
+    <div id="quiz-1" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+        <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif;">Hari ini adalah hari apa?? 🧐</h2>
+        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
+            <button onclick="alert('Masa lupa sih? Coba lagi! 😤')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Hari Biasa Aja</button>
+            <button onclick="document.getElementById('msg-1').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-1').style.display='none'; document.getElementById('quiz-2').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Hari Ulang Tahun Frieza! 🎂</button>
+            <button onclick="alert('Bukan dong! Ayo coba pikir lagi. 🤨')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Hari Libur Nasional</button>
+        </div>
+        <div id="msg-1" class="pesan-benar">Hehe bener sayangkuh! Selamat ulang tahun ya! 😘 🎉</div>
+    </div>
+
+    <!-- KUIS 2 -->
+    <div id="quiz-2" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+        <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif; line-height: 1.4;">Siapa cowok yang paling sayang sama Frieza? 🥰</h2>
+        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
+            <button onclick="alert('Kurang tepat! 😤')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Aktor Korea</button>
+            <button onclick="document.getElementById('msg-2').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-2').style.display='none'; document.getElementById('quiz-3').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Risyad dong pastinya! 🙋🏻‍♂️</button>
+            <button onclick="alert('Ngawur! 😡')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Gak tau</button>
+        </div>
+        <div id="msg-2" class="pesan-benar">Pinter banget sih pacarku ini! 🥰 💕</div>
+    </div>
+
+    <!-- KUIS 3 -->
+    <div id="quiz-3" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+        <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif; line-height: 1.4;">Kalau Risyad lagi pusing ngoding atau nugas, obatnya apa? 💻</h2>
+        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
+            <button onclick="alert('Bukan ini jawabannya! 👎')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Minum obat sakit kepala</button>
+            <button onclick="alert('Enak sih, tapi salah! 😂')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Tidur seharian</button>
+            <button onclick="document.getElementById('msg-3').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-3').style.display='none'; document.getElementById('quiz-4').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Disemangatin sama Frieza ❤️</button>
+        </div>
+        <div id="msg-3" class="pesan-benar">Tahu aja obat paling ampuh buat aku! ❤️ 💊</div>
+    </div>
+
+    <!-- KUIS 4 -->
+    <div id="quiz-4" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+        <h2 style="color: #ff4d88; font-size: 26px; margin-bottom: 20px; font-family: 'Playfair Display', serif; line-height: 1.4;">Apa harapan terbesar Risyad buat kita ke depannya? ✨</h2>
+        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
+            <button onclick="document.getElementById('msg-4').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-4').style.display='none'; document.getElementById('quiz-5').style.display='flex'; }, 1800);" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Langgeng terus & cepet ketemu! ✈️</button>
+            <button onclick="alert('Masa jawabannya ini? 🥺')" style="padding: 15px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; cursor: pointer; font-size: 15px;">Biasa aja</button>
+        </div>
+        <div id="msg-4" class="pesan-benar">Aminnn paling kenceng! Tunggu aku ya sayang... ✈️💕</div>
+    </div>
+
+    <!-- KUIS 5 -->
+    <div id="quiz-5" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; width: 100%; min-height: 100vh;">
+        <h2 style="color: #ff4d88; font-size: 28px; margin-bottom: 30px; font-family: 'Playfair Display', serif;">Pertanyaan terakhir... Kamu sayang aku ngga?? 🥺</h2>
+        <div style="display: flex; gap: 20px; align-items: center; justify-content: center; position: relative; height: 100px; width: 100%;">
+            <button id="btn-yes" onclick="document.getElementById('msg-5').style.display='inline-block'; setTimeout(() => { document.getElementById('quiz-5').style.display='none'; document.getElementById('quiz-6').style.display='flex'; }, 1800);" style="padding: 15px 40px; border-radius: 30px; border: none; background: #ff4d88; color: white; font-weight: bold; font-size: 18px; cursor: pointer; transition: 0.3s; z-index: 100; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.35);">Yes ❤️</button>
+            <button id="btn-no" onclick="growNoButton()" style="padding: 15px 40px; border-radius: 30px; border: 2px solid #ff4d88; background: white; color: #ff4d88; font-weight: bold; font-size: 18px; cursor: pointer; transition: transform 0.3s; position: relative; z-index: 1;">No 💔</button>
+        </div>
+        <div id="msg-5" class="pesan-benar">Iyaaa aku juga sayang banget sama kamu!! 😭💖</div>
+    </div>
+
+    <!-- KUIS 6 (SPOTIFY FLIP CARD) -->
+    <div id="quiz-6" style="display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; width: 100%; min-height: 100vh;">
+        <h2 style="color: #ff4d88; font-size: 22px; margin-bottom: 5px; font-family: 'Playfair Display', serif; text-align: center;">Sebelum buka suratnya, play dulu lagunya yah 🎧</h2>
+        <p style="color: #e62e70; font-size: 13px; font-weight: bold; margin-bottom: 25px; animation: pulse 2s infinite; text-align: center;">(Ketuk kartunya untuk membalik & melihat pesan rahasia! ✨)</p>
+
+        <style>
+            .flip-container { perspective: 1000px; width: 100%; max-width: 320px; margin-bottom: 30px; }
+            .flip-card { position: relative; width: 100%; height: 480px; transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+            .flip-card.is-flipped { transform: rotateY(180deg); }
+            .flip-face { width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 24px; box-shadow: 0 15px 35px rgba(255, 77, 148, 0.25); box-sizing: border-box; overflow: hidden; }
+            .flip-front { background: linear-gradient(145deg, #2a151d, #1a0d12); padding: 20px; }
+            .flip-back { position: absolute; top: 0; left: 0; background: #ffffff; border: 2px dashed #ff4d88; padding: 25px 20px 20px 20px; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: flex-start; }
+            @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        </style>
+
+        <div class="flip-container" onclick="document.getElementById('spotify-card').classList.toggle('is-flipped')">
+            <div id="spotify-card" class="flip-card">
+                
+                <!-- SISI DEPAN -->
+                <div class="flip-face flip-front">
+                    <img src="assets/img1.jpeg" style="width: 100%; aspect-ratio: 1/1; border-radius: 12px; object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                    <div style="margin-top: 20px; text-align: left;">
+                        <h3 style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff;">Shape of My Heart</h3>
+                        <p style="margin: 4px 0 0 0; font-size: 15px; color: #ffb3c6;">Backstreet Boys</p>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 25px;">
+                        <span style="color: #ffb3c6; display: flex; align-items: center;"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></span>
+                        <button id="btn-play-spotify" onclick="event.stopPropagation(); let audio = document.getElementById('bg-music'); let iconPlay = document.getElementById('icon-play'); let iconPause = document.getElementById('icon-pause'); if(audio.paused){audio.play(); iconPlay.style.display='none'; iconPause.style.display='block';}else{audio.pause(); iconPlay.style.display='block'; iconPause.style.display='none';}" style="background: #ff4d88; color: white; border: none; border-radius: 50%; width: 64px; height: 64px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.4);">
+                            <svg id="icon-play" viewBox="0 0 24 24" width="34" height="34" fill="currentColor" style="display: block; margin-left: 4px;"><path d="M8 5v14l11-7z"/></svg>
+                            <svg id="icon-pause" viewBox="0 0 24 24" width="34" height="34" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        </button>
+                        <span style="color: #ffb3c6; display: flex; align-items: center;"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></span>
+                    </div>
+                </div>
+
+                <!-- SISI BELAKANG -->
+                <div class="flip-face flip-back">
+                    <h3 style="color: #ff4d88; font-family: 'Playfair Display', serif; font-size: 18px; margin-top: 0; margin-bottom: 10px; text-align: left;">Our Song 🎶</h3>
+                    <p style="font-size: 12px; font-style: italic; background: #fff5f8; padding: 10px; border-left: 4px solid #ff4d88; border-radius: 8px; margin-bottom: 15px; color: #351522; line-height: 1.5; text-align: left;">"Looking back on the things I've done<br>I was trying to be someone<br>I played my part, kept you in the dark<br>Now let me show you the shape of my heart"</p>
+                    <h4 style="color: #ff4d88; font-size: 13px; margin-bottom: 5px; text-align: left;">Kenapa aku pilih lagu ini?</h4>
+                    <p style="font-size: 12px; color: #4a4a4a; line-height: 1.5; margin: 0; text-align: left;">Lagu ini bener-bener pas buat ngegambarin perasaanku ke kamu, Frieza. Walaupun LDR dan aku kadang sibuk, tapi jauh di dalam hatiku cuma ada kamu. Lewat kado ini, aku pengen nunjukin <b>"The shape of my heart"</b> yang isinya cuma rasa sayang dan syukur punya kamu.</p>
+                    
+<!-- TOMBOL LANJUT YANG SUDAH DIPERBAIKI TOTAL (Anti Blank & Auto Scroll) -->
+                    <button class="btn-primary" onclick="event.stopPropagation(); document.getElementById('quiz-overlay').style.display='none'; let amplop = document.querySelector('section') || document.body; amplop.scrollIntoView({behavior: 'instant', block: 'start'}); window.scrollTo(0, 0);" style="margin-top: auto; display: flex !important; justify-content: center; align-items: center; gap: 10px; width: 100%; border: none;">
+                        <span>Lanjut Buka Surat</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
 
     <!-- Floating Canvas Particles -->
     <canvas id="canvas-sparks" aria-hidden="true"></canvas>
 
     <!-- Progress Navigation Dots -->
-    <nav class="progress-nav" aria-label="Page progress">
-        <span class="dot active" data-section="0"></span>
-        <span class="dot" data-section="1"></span>
-        <span class="dot" data-section="2"></span>
-        <span class="dot" data-section="3"></span>
-        <span class="dot" data-section="4"></span>
-        <span class="dot" data-section="5"></span>
-    </nav>
+
 
     <!-- Top Floating Controls -->
     <div class="top-controls">
@@ -39,6 +262,8 @@
     </div>
 
     <main class="app-container" id="app">
+
+        
 
         <!-- ═══════════════════════════════════════════ -->
         <!-- SECTION 1: ENVELOPE INVITATION (INTRO)     -->
@@ -89,6 +314,7 @@
         <!-- ═══════════════════════════════════════════ -->
         <!-- SECTION 2: DIARY                           -->
         <!-- ═══════════════════════════════════════════ -->
+
         <section id="section-diary" class="section" data-index="1">
             <h2 class="section-title">My Secret Diary</h2>
             <p class="section-subtitle">Rahasia sih ... tapi khusus untuk kamu, kamu boleh baca! ^^</p>
@@ -186,7 +412,7 @@
                         <div class="diary-text">
                             <div class="diary-carousel" id="diary-carousel">
                                 <div class="diary-page active" data-page="0">
-                                <p class="diary-date" id="tanggal">8 OKTOBER 2026</p>
+                                <p class="diary-date" id="tanggal">4 SEPTEMBER 2026</p>
 
                                 <h3 class="diary-salute">🥳 SELAMAT ULANG TAHUN YAA! 🎂🎉🤍</h3>
 
@@ -229,7 +455,11 @@
                                     </p>
 
                                 </div>
-
+                                <!-- PESAN SUARA -->
+<audio id="voice-note" src="assets/voicenote.mp3" onended="document.getElementById('bg-music').volume = 1.0;"></audio>
+<button onclick="document.getElementById('bg-music').volume = 0.15; document.getElementById('voice-note').play(); alert('Ssst... dengerin ya! 🤫');" style="margin-top: 15px; padding: 10px; border-radius: 20px; background: #ff4d88; color: white; font-weight: bold; border: none; cursor: pointer; width: 100%; box-shadow: 0 4px 10px rgba(255, 77, 148, 0.3);">
+    ▶️ Dengerin Suaraku
+</button>
                                 <p class="diary-sign">
                                     With love ♥
                                 </p>
@@ -262,13 +492,15 @@
                 </div>
             </div>
 
-            <button id="btn-gallery-next" class="btn-primary">
-                <span>Time for Cake!</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-            </button>
+    <!-- Progress Bar Berjalan -->
+<div style="width: 100%; height: 30px;"></div>
+
+        <button id="btn-gallery-next" class="btn-primary" style="margin: 0 auto; display: flex !important; justify-content: center; align-items: center; width: max-content !important; padding: 15px 40px; border-radius: 30px; gap: 10px;">
+            <span>Time for Cake!</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </button>
         </section>
 
         <!-- ═══════════════════════════════════════════ -->
@@ -276,8 +508,7 @@
         <!-- ═══════════════════════════════════════════ -->
         <section id="section-cake" class="section" data-index="3">
             <h2 class="section-title" id="cake-title">Time for Cake!</h2>
-            <p class="section-subtitle" id="cake-subtitle">Kuenya versi ini dulu ya. tapi tetep lucu, kan?
-                🍰</p>
+            <p class="section-subtitle" id="cake-subtitle">Kuenya versi ini dulu ya. tapi tetep lucu, kan?</p>
 
             <div class="cake-wrapper">
                 <!-- SVG Birthday Cake with luxury detailing -->
@@ -362,7 +593,43 @@
                 </div>
             </div>
 
-            <button id="btn-cake-next" class="btn-primary btn--hidden">
+<!-- ========================================== -->
+            <!-- 1. CSS TAMBAHAN UNTUK MEMPERBESAR BUKU DIARY -->
+            <style>
+                .diary-scene { transform: scale(1.15) !important; transform-origin: top center; margin-top: 25px; }
+                .diary-paper p { font-size: 14px !important; font-weight: 600 !important; line-height: 1.7 !important; color: #351522 !important; }
+            </style>
+            <!-- ========================================== -->
+
+            <!-- 2. KOLOM KETIK HARAPAN FRIEZA -->
+            <textarea id="frieza-wish" placeholder="Ketik harapan kamu di sini ya sayang..." style="width: 100%; max-width: 280px; height: 80px; background: rgba(255,255,255,0.9); border: 2px dashed #ff4d88; border-radius: 15px; padding: 15px; font-family: 'Quicksand', sans-serif; font-size: 14px; color: #ff4d88; resize: none; margin: 15px auto 25px auto; display: block; text-align: center; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.1); outline: none;"></textarea>
+
+            <!-- 3. TOMBOL CUSTOM (Mengecek ketikan sebelum lanjut) -->
+            <button type="button" onclick="submitWish()" style="padding: 15px 40px; border-radius: 30px; border: none; background: linear-gradient(135deg, #ff4d88, #e62e70); color: white; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 77, 148, 0.35); display: flex; justify-content: center; align-items: center; gap: 10px; margin: 0 auto;">
+
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </button>
+
+            <!-- 4. LOGIKA JAVASCRIPT -->
+            <script>
+                function submitWish() {
+                    let wish = document.getElementById('frieza-wish').value;
+                    if(wish.trim() === '') {
+                        alert('Eits, ketik dulu dong harapannya buat kita! 🥺');
+                    } else {
+                        // Menampilkan alert yang memuat harapan Frieza
+                        alert('Aminnn paling kenceng!✨\n\nHarapan: "' + wish + '"\n\nUdah Risyad aminkan dari jauh! Sekarang pecahin gelembungnya ya!');
+                        
+                        // Sistem secara otomatis memencet tombol asli bawaan template
+                        document.getElementById('btn-cake-next').click();
+                    }
+                }
+            </script>
+
+            <!-- 5. TOMBOL ASLI TEMPLATE (Disembunyikan dengan style="display: none !important;") -->
+            <button id="btn-cake-next" class="btn-primary btn--hidden" style="display: none !important;">
                 <span>Make a Wish</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -944,6 +1211,8 @@
                     </div>
                     <p class="gift-msg-sign">— With all my love &amp; sincerity ♥</p>
                 </div>
+</a>
+                </div>
             </div>
         </section>
     </main>
@@ -953,7 +1222,7 @@
 
     <!-- Background Music -->
     <audio id="bg-music" loop preload="auto">
-        <source src="assets/music.mp3" type="audio/mpeg">
+        <source src="assets/music1.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Image Lightbox / Popup Modal -->
@@ -970,6 +1239,24 @@
 
     <!-- Scripts -->
     <script src="js/index.js?v=3.0"></script>
+    <script>
+    let noScale = 1;
+    function growNoButton() {
+        noScale += 0.5; // Menambah ukuran tombol No setiap kali diklik
+        const btnNo = document.getElementById('btn-no');
+        btnNo.style.transform = `scale(${noScale})`;
+        
+        // Memunculkan alert lucu secara acak
+        const pesanLucu = [
+            "Serius pilih No?? 😭", 
+            "Kok gitu sih sayang? 🥺", 
+            "Pencet Yes dong! 😡", 
+            "Makin dipencet No-nya makin gede loh! 😤"
+        ];
+        const pesanAcak = pesanLucu[Math.floor(Math.random() * pesanLucu.length)];
+        alert(pesanAcak);
+    }
+</script>
 </body>
 
 </html>
